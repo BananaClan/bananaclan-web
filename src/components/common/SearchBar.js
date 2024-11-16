@@ -1,4 +1,5 @@
 import React from 'react'
+import CartDrawer from './CartDrawer'
 
 export const SearchBar = () => {
   return (
@@ -20,9 +21,10 @@ export const SearchBar = () => {
 
         <div className='flex flex-row gap-2 items-center justify-center'>
 
-        <img src="/assets/icons/GroupIcon.svg" className="rounded-full w-10 h-10 border p-1 border-black"  alt="GroupIcon" />
+        {/* <img src="/assets/icons/GroupIcon.svg" className="rounded-full w-10 h-10 border p-1 border-black"  alt="GroupIcon" /> */}
 
-        <img src="/assets/icons/usericon.svg" className="rounded-full w-10 h-10"  alt="User" />
+        <CartDrawer/>
+        <img src="/assets/icons/usericon.svg" className="rounded-full w-8 h-8"  alt="User" />
 
  
 
