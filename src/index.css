@@ -3,28 +3,37 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Futura';
-  src: url('../public/assets/fonts/Futura.ttc') format('truetype');
+  font-family: "Futura";
+  src: url("../public/assets/fonts/Futura.ttc") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('../public/assets/fonts/Satoshi_Complete/Satoshi_Complete/Fonts/TTF/Satoshi-Variable.ttf') format('truetype');
+  font-family: "Satoshi";
+  src: url("../public/assets/fonts/Satoshi_Complete/Satoshi_Complete/Fonts/TTF/Satoshi-Variable.ttf")
+    format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'BebasNeue';
-  src: url('../public/assets/fonts/BebasNeue-Regular.ttf') format('truetype');
+  font-family: "BebasNeue";
+  src: url("../public/assets/fonts/BebasNeue-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
-  font-family: 'Helvetica';
-  src: url('../public/assets/fonts/helvetica/Helvetica.ttf') format('truetype');
+  font-family: "Helvetica";
+  src: url("../public/assets/fonts/helvetica/Helvetica.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "HelveticaNeue";
+  src: url("../public/assets/fonts/helveticaNeue/HelveticaNeueMedium.otf")
+    format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -38,6 +47,6 @@
 } */
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
