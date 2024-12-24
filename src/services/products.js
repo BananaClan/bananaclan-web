@@ -24,6 +24,25 @@ export const NewArrivalproducts = [
     productName: "Nike Air Force 1 07 Fresh",
     price: "₹ 3,199",
   },
+  {
+    id: 5,
+    imageUrl: "/assets/images/WRimage.jpg", // placeholder image path
+    productName: "Nike Air Force 1 07 Fresh",
+    price: "₹ 3,199",
+  },
+  {
+    id: 6,
+    imageUrl: "/assets/images/WRimage.jpg", // placeholder image path
+    productName: "Nike Air Force 1 07 Fresh",
+    price: "₹ 3,199",
+  }, {
+    id: 7,
+    imageUrl: "/assets/images/WRimage.jpg", // placeholder image path
+    productName: "Nike Air Force 1 07 Fresh",
+    price: "₹ 3,199",
+  }
+  
+  
   // Add more products as needed
 ];
 export const WeRecommendedProducts = [
@@ -75,6 +94,54 @@ export const WeRecommendedProducts = [
     productName: "Nike Air Force 1 07 Fresh",
     price: "₹ 3,199",
   },
+  {
+    id: 9,
+    imageUrl: "/assets/images/WRimage.jpg", // placeholder image path
+    productName: "Nike Air Force 1 07 Fresh",
+    price: "₹ 3,199",
+  },
+  {
+    id: 10,
+    imageUrl: "/assets/images/NewArrivalImage1.png", // placeholder image path
+    productName: "Nike Air Force 1 07 Fresh",
+    price: "₹ 3,199",
+  },
+  {
+    id: 11,
+    imageUrl: "/assets/images/WRimage.jpg", // placeholder image path
+    productName: "Nike Air Force 1 07 Fresh",
+    price: "₹ 3,199",
+  },
+  {
+    id: 12,
+    imageUrl: "/assets/images/NewArrivalImage1.png", // placeholder image path
+    productName: "Nike Air Force 1 07 Fresh",
+    price: "₹ 3,199",
+  },
+  {
+    id: 13,
+    imageUrl: "/assets/images/WeRecommendImage.jpg", // placeholder image path
+    productName: "Nike Air Force 1 07 Fresh",
+    price: "₹ 3,199",
+  },
+  {
+    id: 14,
+    imageUrl: "/assets/images/NewArrivalImage1.png", // placeholder image path
+    productName: "Nike Air Force 1 07 Fresh",
+    price: "₹ 3,199",
+  },
+  {
+    id: 15,
+    imageUrl: "/assets/images/WeRecommendImage.jpg", // placeholder image path
+    productName: "Nike Air Force 1 07 Fresh",
+    price: "₹ 3,199",
+  },
+  {
+    id: 16,
+    imageUrl: "/assets/images/NewArrivalImage1.png", // placeholder image path
+    productName: "Nike Air Force 1 07 Fresh",
+    price: "₹ 3,199",
+  }
   // Add more products as needed
 ];
 export const LatestArrivedProducts = [
@@ -192,20 +259,20 @@ export const SellerStoresCollection = [
 ];
 export const faqData = [
   {
-    question: "WHAT IS FIRST COPY SNEAKERS?",
+    question: "01 WHAT IS FIRST COPY SNEAKERS?",
     answer:
       "Lorem ipsum dolor sit amet consectetur. Fermentum vitae posuere massa elementum quis. Sit in arcu fermentum ut.Lorem ipsum dolor sit amet consectetur. Fermentum vitae posuere massa elementum quis. Sit in arcu fermentum ut.",
   },
   {
-    question: "HOW IS FIRST COPY SNEAKERS DIFFERENT FROM THE OG ONE?",
+    question: "02 HOW IS FIRST COPY SNEAKERS DIFFERENT FROM THE OG ONE?",
     answer: "Answer for question 2...",
   },
   {
-    question: "HOW WILL YOU BUYING FIRST COPY PRODUCTS AFFECT THE COMPANY?",
+    question: "03 HOW WILL YOU BUYING FIRST COPY PRODUCTS AFFECT THE COMPANY?",
     answer: "Answer for question 3...",
   },
   {
-    question: "WHY SHOULD YOU TRUST US?",
+    question: "04 WHY SHOULD YOU TRUST US?",
     answer: "Answer for question 4...",
   },
 ];
