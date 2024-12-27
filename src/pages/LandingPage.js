@@ -8,7 +8,7 @@ import { TimelessClassics } from "../components/layout/TimelessClassics";
 import { LatestArrivals } from "../components/layout/LatestArrivals";
 import { SellerStores } from "../components/layout/SellerStores";
 import FAQSection from "../components/landingPagecomponents/FAQSection";
-import {ValuesSection} from "../components/landingPagecomponents/ValuesSection"
+import { ValuesSection } from "../components/landingPagecomponents/ValuesSection";
 import ExpandableBrandCollections from "../components/layout/ExpandableBrandCollections";
 import { Footer } from "../components/common/Footer";
 import { CaptionSection } from "../components/common/CaptionSection";
@@ -17,25 +17,22 @@ export const LandingPage = () => {
   return (
     <div className="w-full h-full bg-white flex flex-col justify-center ">
       <TopBar />
-      <div className="mt-[40px] h-[650px]">
+      <div className="mt-[40px] h-[650px] mb-22">
         <NavandSearchSection />
         <HeroImageContainer />
-
       </div>
-      <CaptionSection />
 
       <div className="flex flex-col justify-center items-center">
-
         <NewArrivals />
         <ExpandableBrandCollections />
 
         <WeRecommendSection />
         <TimelessClassics />
         <LatestArrivals />
-        <ValuesSection/>
+        <ValuesSection />
         <FAQSection />
         <SellerStores />
-        <Footer/>
+        <Footer />
       </div>
     </div>
   );

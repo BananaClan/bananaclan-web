@@ -4,7 +4,7 @@ import { NewArrivalproducts } from "../../services/products";
 
 export const NewArrivals = () => {
   return (
-    <div className="mx-24 w-[1320px] h-[528px] mt-[72px] flex flex-col gap-3">
+    <div className="mt-40 flex flex-col gap-3">
       <div className="flex gap-2 flex-row py-[11.5px] justify-between items-center">
         <div className=" text-[40px] font-normal font-helvetica ">
           New Arrivals
