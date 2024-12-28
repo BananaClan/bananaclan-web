@@ -1,8 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { brands } from "../../services/products";
 import { ProductCard } from "../common/ProductCard";
 import { NewArrivalproducts } from "../../services/products";
-
 
 const BrandCollection = ({ brand, logo }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,17 +14,25 @@ const BrandCollection = ({ brand, logo }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  
-
   const nextSlide = () => {
     if (currentIndex < NewArrivalproducts.length - 4) {
-      setCurrentIndex(currentIndex + 1);
+      const nextIndex = currentIndex + 1;
+      scrollContainerRef.current?.scrollTo({
+        left: nextIndex * (cardWidth + gapWidth),
+        behavior: "smooth",
+      });
+      setCurrentIndex(nextIndex);
     }
   };
 
   const prevSlide = () => {
     if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      const prevIndex = currentIndex - 1;
+      scrollContainerRef.current?.scrollTo({
+        left: prevIndex * (cardWidth + gapWidth),
+        behavior: "smooth",
+      });
+      setCurrentIndex(prevIndex);
     }
   };
 
@@ -37,41 +44,59 @@ const BrandCollection = ({ brand, logo }) => {
     }
   };
 
- // Mouse/Touch handlers for dragging
- const handleMouseDown = (e) => {
-  setIsDragging(true);
-  setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
-  setScrollLeft(scrollContainerRef.current.scrollLeft);
-};
+  // Mouse/Touch handlers for dragging
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+  };
 
-const handleTouchStart = (e) => {
-  setIsDragging(true);
-  setStartX(e.touches[0].pageX - scrollContainerRef.current.offsetLeft);
-  setScrollLeft(scrollContainerRef.current.scrollLeft);
-};
+  const handleTouchStart = (e) => {
+    setIsDragging(true);
+    setStartX(e.touches[0].pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+  };
 
-const handleMouseUp = () => {
-  setIsDragging(false);
-};
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
 
-const handleMouseLeave = () => {
-  setIsDragging(false);
-};
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
 
-const handleMouseMove = (e) => {
-  if (!isDragging) return;
-  e.preventDefault();
-  const x = e.pageX - scrollContainerRef.current.offsetLeft;
-  const walk = (x - startX) * 2; // Adjust scrolling speed
-  scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-};
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Adjust scrolling speed
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
 
-const handleTouchMove = (e) => {
-  if (!isDragging) return;
-  const x = e.touches[0].pageX - scrollContainerRef.current.offsetLeft;
-  const walk = (x - startX) * 2;
-  scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-}
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const x = e.touches[0].pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollContainerRef.current) {
+        const scrollPosition = scrollContainerRef.current.scrollLeft;
+        const newIndex = Math.round(scrollPosition / (cardWidth + gapWidth));
+        if (newIndex !== currentIndex) {
+          setCurrentIndex(newIndex);
+        }
+      }
+    };
+
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+      return () => container.removeEventListener("scroll", handleScroll);
+    }
+  }, [currentIndex, cardWidth, gapWidth]);
 
   return (
     <div className="border-b border-black py-4">
@@ -156,36 +181,36 @@ const handleTouchMove = (e) => {
               </div>
             </div>
           </div>
+          <div className="relative overflow-visible">
           <div
-                  // style={{overflow:'inherit'}}
-                  className="flex overflow-x-clip flex-row  gap-[16px] hover:transform hover:0.3s hover:ease-in-out "
-                >
-                  {NewArrivalproducts.map((product) => {
-                    return (
-                      <div
-                        style={{
-                          width: cardWidth,
-                          gap: `${gapWidth}px`,
-                          transition: "transform 0.3s ease-in-out",
-                          transform: `translateX(-${
-                            currentIndex * (cardWidth + gapWidth)
-                          }px)`,
-                        }}
-                        key={product.id}
-                        className="flex  "
-                        // style={{ width: cardWidth }}
-                      >
-                        <ProductCard
-                          imageUrl={product.imageUrl}
-                          productName={product.productName}
-                          price={product.price}
-                          navigationUrl={`/product/${product.id}`}
-                        />
-                      </div>
-                    );
-                  })}
-                  {/* </div> */}
+    ref={scrollContainerRef}
+    className="flex overflow-x-auto hide-scrollbar gap-[16px] py-20 -my-20"
+    style={{
+      scrollSnapType: 'x mandatory',
+      WebkitOverflowScrolling: 'touch'
+    }}
+  >
+            {NewArrivalproducts.map((product) => {
+              return (
+                <div
+  key={product.id}
+  className="flex-shrink-0 relative"
+  style={{
+    width: cardWidth,
+    scrollSnapAlign: 'start'
+  }}
+>
+                  <ProductCard
+                    imageUrl={product.imageUrl}
+                    productName={product.productName}
+                    price={product.price}
+                    navigationUrl={`/product/${product.id}`}
+                  />
                 </div>
+              );
+            })}
+           </div>
+          </div>
         </div>
       </div>
     </div>

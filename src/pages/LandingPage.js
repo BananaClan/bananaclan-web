@@ -32,7 +32,7 @@ export const LandingPage = () => {
         <ValuesSection />
         <FAQSection />
         <SellerStores />
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </div>
   );
