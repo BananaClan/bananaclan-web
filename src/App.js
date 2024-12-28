@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { LandingPage } from "./pages/LandingPage";
+// import SellerProfilePage from "./pages/SellerProfilePage";
+import ProductDetailPage from "./pages/Sneaker Marketplace Product Detail Page";
 import BagPage from "./pages/BagPage";
 import ShippingPage from "./pages/ShippingPage";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
@@ -15,6 +17,8 @@ const App = () => {
         <div className="min-h-screen flex flex-col">
           <main className="flex-grow">
             <Routes>
+              <Route path="/porductdetail" element={<ProductDetailPage />} />
+          
               <Route path="/" element={<LandingPage />} />
               <Route path="/bag" element={<BagPage />} />
               <Route path="/shipping" element={<ShippingPage />} />
