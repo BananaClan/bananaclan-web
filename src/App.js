@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { LandingPage } from "./pages/LandingPage";
-import SellerProfilePage from "./pages/SellerProfilePage";
+// import SellerProfilePage from "./pages/SellerProfilePage";
 import ProductDetailPage from "./pages/Sneaker Marketplace Product Detail Page";
 import BagPage from "./pages/BagPage";
 import ShippingPage from "./pages/ShippingPage";
