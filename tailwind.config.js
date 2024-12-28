@@ -10,16 +10,12 @@ module.exports = {
         }],
       },
       fontFamily: {
-        satoshi: ['Satoshi', 'sans-serif'],
-        futura: ['Futura', 'sans-serif'],
-        futurac: ['FuturaC', 'sans-serif'],
-        bebasNeue:['BebasNeue','sans-serif'],
-        helvetica:['Helvetica','sans-serif']
         satoshi: ["Satoshi", "sans-serif"],
         futura: ["Futura", "sans-serif"],
+        futurac: ["FuturaC", "sans-serif"],
         bebasNeue: ["BebasNeue", "sans-serif"],
         helvetica: ["Helvetica", "sans-serif"],
-        helveticaNeue: ["HelveticaNeue", "sans-serif"],
+        helveticaNeue: ["HelveticaNeue", "sans-serif"]
       },
       colors: {
         "TopBar-blue": "#322FEE",

@@ -9,19 +9,12 @@
   font-style: normal;
 }
 @font-face {
-  font-family: 'FuturaC';
-  src: url('../public/assets/fonts/FuturaC.ttc') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
   font-family: "Satoshi";
   src: url("../public/assets/fonts/Satoshi_Complete/Satoshi_Complete/Fonts/TTF/Satoshi-Variable.ttf")
     format("truetype");
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
   font-family: "BebasNeue";
   src: url("../public/assets/fonts/BebasNeue-Regular.ttf") format("truetype");
@@ -34,7 +27,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
   font-family: "HelveticaNeue";
   src: url("../public/assets/fonts/helveticaNeue/HelveticaNeueMedium.otf")
@@ -54,11 +46,4 @@
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-.scrollbar-none::-webkit-scrollbar{
-  display: none;
-}
-.scrollbar-none{
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
