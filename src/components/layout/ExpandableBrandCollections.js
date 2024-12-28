@@ -1,24 +1,33 @@
 import React, { useState, useRef } from "react";
 import { brands } from "../../services/products";
+import { ProductCard } from "../common/ProductCard";
+import { NewArrivalproducts } from "../../services/products";
 
-const ProductCard = ({ name, price, imageSrc }) => (
-  <div className="w-[302px] flex-shrink-0 mr-3">
-    <img
-      src={imageSrc}
-      alt={name}
-      className="w-full h-[395px] object-cover mb-2"
-    />
-    <p className="text-sm">{name}</p>
-    <div className="flex justify-between items-center">
-      <p className="font-bold">₹ {price}</p>
-      <button className="text-2xl">→</button>
-    </div>
-  </div>
-);
 
 const BrandCollection = ({ brand, logo }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
   const scrollContainerRef = useRef(null);
+  const cardWidth = 315; // Width of each card
+  const gapWidth = 16; // Gap between cards
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  
+
+  const nextSlide = () => {
+    if (currentIndex < NewArrivalproducts.length - 4) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const prevSlide = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
 
   const scroll = (direction) => {
     const container = scrollContainerRef.current;
@@ -28,17 +37,44 @@ const BrandCollection = ({ brand, logo }) => {
     }
   };
 
-  // Mock data for 20 products
-  const products = Array(20)
-    .fill()
-    .map((_, index) => ({
-      name: `${brand} Air Force 1 '07 Fresh`,
-      price: "3,199",
-      imageSrc: "/assets/images/WRimage.jpg",
-    }));
+ // Mouse/Touch handlers for dragging
+ const handleMouseDown = (e) => {
+  setIsDragging(true);
+  setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+  setScrollLeft(scrollContainerRef.current.scrollLeft);
+};
+
+const handleTouchStart = (e) => {
+  setIsDragging(true);
+  setStartX(e.touches[0].pageX - scrollContainerRef.current.offsetLeft);
+  setScrollLeft(scrollContainerRef.current.scrollLeft);
+};
+
+const handleMouseUp = () => {
+  setIsDragging(false);
+};
+
+const handleMouseLeave = () => {
+  setIsDragging(false);
+};
+
+const handleMouseMove = (e) => {
+  if (!isDragging) return;
+  e.preventDefault();
+  const x = e.pageX - scrollContainerRef.current.offsetLeft;
+  const walk = (x - startX) * 2; // Adjust scrolling speed
+  scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+};
+
+const handleTouchMove = (e) => {
+  if (!isDragging) return;
+  const x = e.touches[0].pageX - scrollContainerRef.current.offsetLeft;
+  const walk = (x - startX) * 2;
+  scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+}
 
   return (
-    <div className="border-b border-gray-300 py-4">
+    <div className="border-b border-black py-4">
       <div
         className="flex justify-between items-center cursor-pointer w-full"
         onClick={() => setIsOpen(!isOpen)}
@@ -49,47 +85,107 @@ const BrandCollection = ({ brand, logo }) => {
             alt={`${brand} logo`}
             className="w-[128px] h-[96px] mr-4"
           />
-          <h2 className="text-3xl font-bold">{brand} COLLECTIONS</h2>
+          <h2 className="font-futurac font-condensed text-5xl leading-[54.11px]">
+            {brand} COLLECTIONS
+          </h2>
         </div>
-        <span
-          className={`text-xl transform transition-transform duration-300 ${
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className={`transform transition-transform duration-300 ${
             isOpen ? "rotate-180" : ""
           }`}
         >
-          ▼
-        </span>
+          <path
+            d="M4 4L12 12M12 12H6M12 12V6"
+            stroke="black"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </div>
       <div
         className={`transition-all duration-500 ease-in-out ${
           isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
         } overflow-hidden`}
       >
-        <div className="mt-4">
-          <div className="flex justify-end mb-2">
-            <button className="bg-white text-black px-4 py-2 rounded-full mr-2">
-              VIEW ALL
-            </button>
-            <button
-              onClick={() => scroll("left")}
-              className="bg-white text-black w-10 h-10 rounded-full flex items-center justify-center mr-2"
-            >
-              ←
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              className="bg-white text-black w-10 h-10 rounded-full flex items-center justify-center"
-            >
-              →
-            </button>
+        <div className="mt-4 flex flex-col">
+          <div className="flex relative gap-2  flex-row py-[11.5px] justify-between items-center">
+            <div className="text-[40px] font-normal font-helvetica leading-[46px]"></div>
+            <div className="flex flex-row gap-5 w-[227px] h-[40px] justify-between items-center mr-3">
+              <div className="font-satoshi font-normal text-[16px] leading-[21.6px] rounded-4xl border py-2 px-5 border-black flex items-center w-[111px] h-[38px]">
+                View ALL
+              </div>
+              <div className="flex gap-4">
+                <button
+                  onClick={prevSlide}
+                  className={`${
+                    currentIndex === 0 ? "cursor-not-allowed opacity-50" : ""
+                  }`}
+                  disabled={currentIndex === 0}
+                >
+                  <div className="border rounded-3xl border-black p-3 w-[40px] h-[40px] flex items-center justify-center">
+                    <img
+                      src="/assets/icons/buttonIcon1.png"
+                      className=""
+                      alt="backwardbutton"
+                    />
+                  </div>
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className={`${
+                    currentIndex >= NewArrivalproducts.length - 4
+                      ? "cursor-not-allowed opacity-50"
+                      : ""
+                  }`}
+                  disabled={currentIndex >= NewArrivalproducts.length - 4}
+                >
+                  <div className="border rounded-3xl border-black p-3 w-[40px] h-[40px] flex items-center justify-center">
+                    <img
+                      src="/assets/icons/buttonIcon2.png"
+                      className=""
+                      alt="forwardbutton"
+                    />
+                  </div>
+                </button>
+              </div>
+            </div>
           </div>
           <div
-            ref={scrollContainerRef}
-            className="flex overflow-x-auto scrollbar-hide"
-          >
-            {products.map((product, index) => (
-              <ProductCard key={index} {...product} />
-            ))}
-          </div>
+                  // style={{overflow:'inherit'}}
+                  className="flex overflow-x-clip flex-row  gap-[16px] hover:transform hover:0.3s hover:ease-in-out "
+                >
+                  {NewArrivalproducts.map((product) => {
+                    return (
+                      <div
+                        style={{
+                          width: cardWidth,
+                          gap: `${gapWidth}px`,
+                          transition: "transform 0.3s ease-in-out",
+                          transform: `translateX(-${
+                            currentIndex * (cardWidth + gapWidth)
+                          }px)`,
+                        }}
+                        key={product.id}
+                        className="flex  "
+                        // style={{ width: cardWidth }}
+                      >
+                        <ProductCard
+                          imageUrl={product.imageUrl}
+                          productName={product.productName}
+                          price={product.price}
+                          navigationUrl={`/product/${product.id}`}
+                        />
+                      </div>
+                    );
+                  })}
+                  {/* </div> */}
+                </div>
         </div>
       </div>
     </div>

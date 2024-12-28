@@ -9,7 +9,7 @@ export const SellerStores = () => {
 <SlidingCards
         name="Sellers"
         cardData={SellerStoresCollection}
-        cardWidth="327.94px"
+        cardWidth="347.94px"
         cardHeight="520px"
       />
 

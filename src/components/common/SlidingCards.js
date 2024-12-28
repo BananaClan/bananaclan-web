@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const Card = ({ image, title, description, width, height }) => (
   <div
     style={{ width, height }}
-    className="bg-white overflow-hidden flex-shrink-0"
+    className=" overflow-hidden flex-shrink-0"
   >
     <img
       src={image}
@@ -11,12 +11,37 @@ const Card = ({ image, title, description, width, height }) => (
       style={{ height: `${parseInt(height) * 0.75}px` }}
       className="w-full object-cover"
     />
-    <div className="p-4">
-      <h3 className="font-bold text-lg mb-2">{title}</h3>
-      <p className="text-sm text-gray-600">{description}</p>
-      <button className="mt-4 text-sm font-semibold text-blue-600 hover:text-blue-800">
-        SHOP NOW
-      </button>
+    <div >
+    
+
+
+   <div className="flex items-center gap-3 pt-4 bg-white justify-between">
+    <div className="flex ">
+      <div className="w-12 h-12 rounded-full bg-yellow-300 flex items-center justify-center">
+      <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            className="w-8 h-8"
+          >
+            
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+      </div>
+      <div className="flex flex-col pl-2">
+        <span className="font-medium font-satoshi text-xl">{title}</span>
+        <span className="text-gray-500 text-sm font-satoshi ">Calicut, Kerala</span>
+      </div>
+      </div>
+      <div className="ml-8">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 17L16 8M16 8H7M16 8V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+
     </div>
   </div>
 );

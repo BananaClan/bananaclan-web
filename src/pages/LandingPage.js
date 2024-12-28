@@ -27,7 +27,7 @@ export const LandingPage = () => {
         <ExpandableBrandCollections />
 
         <WeRecommendSection />
-        <TimelessClassics />
+        {/* <TimelessClassics /> */}
         <LatestArrivals />
         <ValuesSection />
         <FAQSection />

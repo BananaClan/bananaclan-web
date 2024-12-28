@@ -3,12 +3,19 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontSize: {
+        'custom-40': ['40px', {
+          lineHeight: '46px',
+          fontWeight: '400',
+        }],
+      },
       fontFamily: {
         satoshi: ["Satoshi", "sans-serif"],
         futura: ["Futura", "sans-serif"],
+        futurac: ["FuturaC", "sans-serif"],
         bebasNeue: ["BebasNeue", "sans-serif"],
         helvetica: ["Helvetica", "sans-serif"],
-        helveticaNeue: ["HelveticaNeue", "sans-serif"],
+        helveticaNeue: ["HelveticaNeue", "sans-serif"]
       },
       colors: {
         "TopBar-blue": "#322FEE",

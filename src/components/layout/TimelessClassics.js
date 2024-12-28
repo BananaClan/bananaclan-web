@@ -7,7 +7,7 @@ import SlidingCards from '../common/SlidingCards';
 
 export const TimelessClassics = () => {
   return (
-<div className='mx-24 w-[1320px] h-[598px] mt-[72px] mb-4 flex flex-col gap-3'>
+<div className='mx-24 w-[1320px] h-[726px] mt-[72px] mb-4 flex flex-col gap-3'>
       
       <SlidingCards
         name="Timeless Classics"
@@ -15,11 +15,6 @@ export const TimelessClassics = () => {
         cardWidth="327.94px"
         cardHeight="520px"
       />
-    {/* </div> */}
-
-
-
-
 
     </div>
   )

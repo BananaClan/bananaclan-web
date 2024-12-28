@@ -9,21 +9,32 @@ const FAQItem = ({ question, answer, isOpen, toggleOpen }) => (
         className="flex justify-between items-center w-full text-left"
         onClick={toggleOpen}
       >
-        <span className="font-semibold">{question}</span>
-        <span
-          className={`text-xl transform transition-transform duration-300 ${
+        <span className="font-futurac font-medium text-[32px]">{question}</span>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className={`transform transition-transform duration-300 ${
             isOpen ? "rotate-180" : ""
           }`}
         >
-          ▼
-        </span>
+          <path
+            d="M4 4L12 12M12 12H6M12 12V6"
+            stroke="black"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </button>
       <div
         className={`mt-2 overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <p className="text-gray-600">{answer}</p>
+        <p className="font-medium font-satoshi text-xl pl-12">{answer}</p>
       </div>
     </div>
 
@@ -39,15 +50,18 @@ const FAQItem = ({ question, answer, isOpen, toggleOpen }) => (
         <div className="flex flex-col md:flex-row md:justify-between gap-8">
           {/* Left column: "Still confused?" section */}
           <div className="md:w-1/5">
-            <h2 className="text-2xl font-bold mb-2">Still confused?</h2>
-            <p className="text-gray-600 mb-4">
+            <h2 className="font-helvetica text-[40px] font-normal leading-[46px] mb-2">Still confused?</h2>
+            <p className="font-satoshi text-xl font-medium mb-4">
               Lorem ipsum dolor sit amet consectetur.If you still have anything
               to know, write to us directly
             </p>
-            <button className="flex items-center px-4 py-2 bg-white text-black border border-black rounded-full hover:bg-gray-100 transition-colors duration-500">
-              <span className="mr-2">✉️</span>
+            <button className="flex items-center justify-center text-lg leading-6 font-normal px-5 py-2 font-satoshi gap-2 w-[182px] h-[43px] bg-white text-black border border-black rounded-[32px] hover:bg-gray-100 transition-colors duration-500">
               SENT EMAIL
-            </button>
+              <img 
+ src="/assets/icons/gmailicon.png"
+ alt="Gmail icon" 
+ className="w-6 h-6 p-[2px_2px_4px_2px] mr-2"
+/>            </button>
           </div>
 
           {/* Right column: FAQ items */}
