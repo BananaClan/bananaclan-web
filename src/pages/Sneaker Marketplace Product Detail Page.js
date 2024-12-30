@@ -5,7 +5,7 @@ import {
   NewArrivalproducts,
   WeRecommendedProducts,
 } from "../services/products";
-import { NavandSearchSection } from "../components/layout/NavandSearchSection";
+
 import { ProductSlider } from "../components/common/ProductSlider";
 
 const ProductDetailPage = () => {
@@ -134,23 +134,18 @@ const ProductDetailPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen px-4 md:px-6 lg:px-8">
-      {/* Header placeholder */}
-      <div className="mt-[50px]">
-        <NavandSearchSection />
-      </div>
-
       {/* Main content */}
       <main className="flex-grow  ">
         <div className=" px-4 py-8 container mx-auto max-w-[1512px] ">
           {/* Breadcrumbs */}
           <div className="max-w-[1320px] mx-auto">
-    <div className="flex flex-row text-sm font-normal mb-5">
-      <div className="font-satoshi">
-        Home &gt; European Classics &gt; Adidas Samba &gt;
-      </div>
-      <div className="font-medium">Adidas Samba OG Black</div>
-    </div>
-  </div>
+            <div className="flex flex-row text-sm font-normal mb-5">
+              <div className="font-satoshi">
+                Home &gt; European Classics &gt; Adidas Samba &gt;
+              </div>
+              <div className="font-medium">Adidas Samba OG Black</div>
+            </div>
+          </div>
 
           {/* Product section */}
           <div className="flex flex-col md:flex-row   max-w-[1320px] mx-auto">
