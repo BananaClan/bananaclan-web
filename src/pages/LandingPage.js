@@ -1,6 +1,6 @@
 import React from "react";
 import { TopBar } from "../components/common/TopBar";
-import { NavandSearchSection } from "../components/layout/NavandSearchSection";
+
 import { HeroImageContainer } from "../components/layout/HeroImageContainer";
 import { NewArrivals } from "../components/layout/NewArrivals";
 import { WeRecommendSection } from "../components/layout/WeRecommendSection";
@@ -13,12 +13,11 @@ import ExpandableBrandCollections from "../components/layout/ExpandableBrandColl
 import { Footer } from "../components/common/Footer";
 import { CaptionSection } from "../components/common/CaptionSection";
 
-export const LandingPage = () => {
+const LandingPage = () => {
   return (
     <div className="w-full h-full bg-white flex flex-col justify-center ">
       <TopBar />
       <div className="mt-[40px] h-[650px] mb-22">
-        <NavandSearchSection />
         <HeroImageContainer />
       </div>
 
@@ -37,3 +36,5 @@ export const LandingPage = () => {
     </div>
   );
 };
+
+export default LandingPage;
