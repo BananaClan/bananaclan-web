@@ -471,7 +471,6 @@ const ProductDetailPage = () => {
       </main>
 
       {/* Footer placeholder */}
-      <Footer />
     </div>
   );
 };
