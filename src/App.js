@@ -1,4 +1,5 @@
 import React from "react";
+import { ClerkProvider ,SignedIn,SignedOut} from "@clerk/clerk-react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 // import SellerProfilePage from "./pages/SellerProfilePage";
@@ -11,31 +12,74 @@ import { CartProvider } from "./context/CartContext";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import NavBar from "./components/common/NavBar";
 
-const App = () => {
-  return (
-    <CartProvider>
-      <NavBar></NavBar>
-      <Router>
-        <div className="min-h-screen flex flex-col">
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/porductdetail" element={<ProductDetailPage />} />
+import AuthPage from "./pages/AuthPage";
 
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/bag" element={<BagPage />} />
-              <Route path="/shipping" element={<ShippingPage />} />
-              <Route path="/order-success" element={<OrderSuccessPage />} />
-              <Route
-                path="/order-conformation"
-                element={<OrderConfirmation />}
-              />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+const App = () => {
+  const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
+
+  if (!clerkPubKey) {
+    console.error("Missing Publishable Key");
+    return null;
+  }
+
+  return (
+    <ClerkProvider publishableKey={clerkPubKey}>
+      <Router>
+        <CartProvider>
+          <NavBar />
+          <div className="min-h-screen flex flex-col">
+            <main className="flex-grow">
+              <Routes>
+                {/* Public routes that don't require authentication */}
+                <Route path="/" element={<LandingPage />} />
+                {/* <Route path="/productdetail" element={<ProductDetailPage />} /> */}
+                <Route path="/auth" element={<AuthPage />} />
+
+  {/* Update the product detail route to accept an ID parameter */}
+  <Route path="/product/:productId" element={<ProductDetailPage />} />
+
+                {/* Protected routes that require authentication */}
+                <Route
+                  path="/bag"
+                  element={
+                    <SignedIn>
+                      <BagPage />
+                    </SignedIn>
+                  }
+                />
+                <Route
+                  path="/shipping"
+                  element={
+                    <SignedIn>
+                      <ShippingPage />
+                    </SignedIn>
+                  }
+                />
+                <Route
+                  path="/order-success"
+                  element={
+                    <SignedIn>
+                      <OrderSuccessPage />
+                    </SignedIn>
+                  }
+                />
+                <Route
+                  path="/order-confirmation"
+                  element={
+                    <SignedIn>
+                      <OrderConfirmation />
+                    </SignedIn>
+                  }
+                />
+              </Routes>
+            </main>
+            {/* <Footer /> */}
+          </div>
+        </CartProvider>
       </Router>
-    </CartProvider>
+    </ClerkProvider>
   );
 };
+
 
 export default App;

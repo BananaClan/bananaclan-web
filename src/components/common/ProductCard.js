@@ -5,6 +5,7 @@ export const ProductCard = ({
   imageUrl,
   productName,
   price,
+  productId,
   navigationUrl = "/",
   width = 318,
   height = 425,
@@ -13,6 +14,7 @@ export const ProductCard = ({
   const [isHovered, setIsHovered] = useState(false);
   const imageHeight = Math.round(height * 0.8);
   const contentHeight = height - imageHeight;
+  const navigate = useNavigate();
 
   const ArrowIcon = () => (
     <svg 
@@ -44,11 +46,28 @@ export const ProductCard = ({
       </button>
     );
   };
+
+  // Handle click on the entire card
+  const handleCardClick = () => {
+    if (productId) {
+      navigate(`/product/${productId}`);
+    }
+  };
+
+  // Handle arrow button click separately to prevent event bubbling
+  const handleArrowClick = (e) => {
+    e.stopPropagation(); // Prevent the card click event from firing
+    if (productId) {
+      navigate(`/product/${productId}`);
+    }
+  };
+
   return (
     <div
-      className="flex flex-col "
+      className="flex flex-col cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleCardClick}
       style={{ width: `${width}px` }}
     >
       {/* Top store info div - slides down */}
@@ -101,7 +120,15 @@ export const ProductCard = ({
             </p>
           </div>
           <div className="flex items-center justify-center">
+          <button 
+              onClick={handleArrowClick}
+              className={`w-8 h-8 rounded-full border border-blue-700 flex items-center justify-center transition-all duration-300 ${
+                isHovered ? 'bg-blue-700' : 'hover:bg-blue-50'
+              }`}
+              aria-label="View product details"
+            >
             <ArrowButton />
+            </button>
           </div>
         </div>
       </div>

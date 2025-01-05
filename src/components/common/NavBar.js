@@ -157,7 +157,7 @@ const NavBar = () => {
           >
             <CartDrawer />
             <UserProfileDrawer
-              isLoggedIn={true}
+              isLoggedIn={false}
               userAvatar="/assets/images/img-avatar.gif"
             />
           </div>

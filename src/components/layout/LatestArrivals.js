@@ -125,9 +125,11 @@ export const LatestArrivals = () => {
             >
               <ProductCard
                 key={product._id}
+                productId={product._id} // Pass the product ID
                 imageUrl={product.imageUrls[0].url}
                 productName={product.name}
                 price={`₹ ${product.price}`}
+                storeName={product.seller?.name || "v2shoestore"} // Add seller name if available
               />
             </div>
           );

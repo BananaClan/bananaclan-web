@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { useAuth, useUser, SignInButton, UserButton, useClerk } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 
-const UserProfileDrawer = ({ isLoggedIn, userAvatar }) => {
+const UserProfileDrawer = ({  }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("profile");
   const [slideDirection, setSlideDirection] = useState("forward");
+  const { isLoaded, isSignedIn } = useAuth();
+  const { user } = useUser();
+  const { signOut } = useClerk();
+  const navigate = useNavigate();
+
+
+ // Add debug logging
+ useEffect(() => {
+  console.log("Auth State:", { isLoaded, isSignedIn, user });
+}, [isLoaded, isSignedIn, user]);
+
 
   useEffect(() => {
     if (isOpen) {
@@ -32,18 +45,54 @@ const UserProfileDrawer = ({ isLoggedIn, userAvatar }) => {
     setCurrentPage(page);
   };
 
+  // const renderProfileButton = () => {
+  //   if (isLoggedIn && userAvatar) {
+  //     return (
+  //       <img
+  //         src={userAvatar}
+  //         alt="Profile"
+  //         className="w-10 h-10 rounded-full object-cover ]"
+  //       />
+  //     );
+  //   }
+
+
+  // Updated profile button renderer using Clerk
+
   const renderProfileButton = () => {
-    if (isLoggedIn && userAvatar) {
+    if (!isLoaded) {
       return (
-        <img
-          src={userAvatar}
-          alt="Profile"
-          className="w-10 h-10 rounded-full object-cover ]"
-        />
+        <button 
+          className="w-10 h-10 rounded-full bg-gray-200 animate-pulse flex items-center justify-center"
+          disabled
+        >
+          <span className="sr-only">Loading...</span>
+        </button>
+      );
+    } 
+
+    if (isSignedIn) {
+      return (
+        <button 
+          onClick={() => setIsOpen(true)}
+          className="w-10 h-10 rounded-full overflow-hidden"
+        >
+          <img
+            src={user?.imageUrl || "/assets/images/default-avatar.png"}
+            alt="Profile"
+            className="w-full h-full object-cover"
+          />
+        </button>
       );
     }
 
     return (
+
+      <button 
+        onClick={() => navigate("/auth")} 
+        className="cursor-pointer"
+      >
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <svg
         width="40"
         height="40"
@@ -72,9 +121,41 @@ const UserProfileDrawer = ({ isLoggedIn, userAvatar }) => {
           fill="white"
         />
       </svg>
+      </svg>
+        </button>
     );
   };
 
+   // Updated profile section using Clerk user data
+   const renderProfileSection = () => {
+    if (!isSignedIn) return null;
+
+    return (
+      <div className="mt-16 mx-6 pb-5 pt-5 px-6 bg-[#f9f9f9] rounded-lg flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <img
+            src={user?.imageUrl || "/assets/images/default-avatar.png"}
+            alt="Profile"
+            className="w-[62px] h-[62px] rounded-full object-cover"
+          />
+          <div>
+            <h2 className="font-helvetica text-[20px] font-normal">
+              Hi {user?.firstName || user?.username || "User"}!
+            </h2>
+            <p className="font-helvetica text-[14px] font-normal text-[#c3c3c3]">
+              {user?.emailAddresses[0].emailAddress}
+            </p>
+          </div>
+        </div>
+        <button 
+          onClick={() => handlePageChange("profile-management")}
+          className="font-satoshi text-[16px] underline underline-offset-4 decoration-1"
+        >
+          Edit Profile
+        </button>
+      </div>
+    );
+  };
   const handleBack = () => {
     setSlideDirection("backward");
     setCurrentPage("profile");
@@ -271,6 +352,17 @@ const UserProfileDrawer = ({ isLoggedIn, userAvatar }) => {
   );
 
   const renderPage = () => {
+    if (!isSignedIn) {
+      return (
+        <div className="h-full flex items-center justify-center">
+          <SignInButton mode="modal">
+            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg">
+              Sign in to continue
+            </button>
+          </SignInButton>
+        </div>
+      );
+    }
     switch (currentPage) {
       case "orders":
         return <OrdersPage />;
@@ -297,8 +389,10 @@ const UserProfileDrawer = ({ isLoggedIn, userAvatar }) => {
               </svg>
             </button>
 
+            {renderProfileSection()}
+
             {/* Profile Section */}
-            <div className="mt-16 mx-6 pb-5 pt-5 px-6 bg-[#f9f9f9] rounded-lg flex items-center justify-between">
+            {/* <div className="mt-16 mx-6 pb-5 pt-5 px-6 bg-[#f9f9f9] rounded-lg flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <img
                   src="/assets/images/img-avatar.gif"
@@ -317,7 +411,7 @@ const UserProfileDrawer = ({ isLoggedIn, userAvatar }) => {
               <button className="font-satoshi text-[16px] underline underline-offset-4 decoration-1">
                 Edit Profile
               </button>
-            </div>
+            </div> */}
 
             {/* Menu Items */}
             <div className="mt-6 mx-6">
@@ -371,7 +465,9 @@ const UserProfileDrawer = ({ isLoggedIn, userAvatar }) => {
 
             {/* Logout Button */}
             <div className="absolute bottom-0 left-0 right-0 p-6">
-              <button className="w-full flex items-center justify-center gap-[10px] p-[16.5px] bg-black text-white font-helvetica text-[20px] font-normal">
+              <button
+              onClick={() => signOut()}
+               className="w-full flex items-center justify-center gap-[10px] p-[16.5px] bg-black text-white font-helvetica text-[20px] font-normal">
                 <svg
                   width="25"
                   height="24"
@@ -396,12 +492,15 @@ const UserProfileDrawer = ({ isLoggedIn, userAvatar }) => {
 
   return (
     <div className="z-40">
-      <button onClick={() => setIsOpen(true)}>{renderProfileButton()}</button>
+      {/* <button onClick={() => setIsOpen(true)}>{renderProfileButton()}</button> */}
+      {renderProfileButton()}
 
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-[96]"
-          onClick={handleOverlayClick}
+          // onClick={handleOverlayClick}
+          onClick={() => setIsOpen(false)}
+
         />
       )}
 
