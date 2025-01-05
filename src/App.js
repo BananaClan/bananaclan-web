@@ -32,8 +32,11 @@ const App = () => {
               <Routes>
                 {/* Public routes that don't require authentication */}
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/productdetail" element={<ProductDetailPage />} />
+                {/* <Route path="/productdetail" element={<ProductDetailPage />} /> */}
                 <Route path="/auth" element={<AuthPage />} />
+
+  {/* Update the product detail route to accept an ID parameter */}
+  <Route path="/product/:productId" element={<ProductDetailPage />} />
 
                 {/* Protected routes that require authentication */}
                 <Route

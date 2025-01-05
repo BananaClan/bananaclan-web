@@ -1,58 +1,67 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [cartItems] = useState([
-    {
-      id: 1,
-      name: "Adidas Samba Brazil Edition",
-      price: 3199,
-      size: "UK 7",
-      quantity: 1,
-      image: "assets/images/WeRecommendImage.jpg",
-      seller: "V2 Shoes",
-    },
-    {
-      id: 2,
-      name: "Nike Air Force 1",
-      price: 4999,
-      size: "UK 8",
-      quantity: 1,
-      image: "assets/images/WeRecommendImage.jpg",
-      seller: "Nike Store",
-    },
-    {
-      id: 3,
-      name: "Puma RS-X",
-      price: 2999,
-      size: "UK 9",
-      quantity: 1,
-      image: "assets/images/WeRecommendImage.jpg",
-      seller: "Puma Official",
-    },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const getSelectedProducts = () => {
-    return cartItems.filter((item) => selectedItems.includes(item.id));
+  // Load cart items from localStorage on mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cartItems');
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
+  }, []);
+
+  // Save cart items to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const addToCart = (product) => {
+    setCartItems(prevItems => {
+      const existingItemIndex = prevItems.findIndex(
+        item => item.id === product.id && item.size === product.size
+      );
+
+      if (existingItemIndex !== -1) {
+        const updatedItems = [...prevItems];
+        updatedItems[existingItemIndex].quantity += 1;
+        return updatedItems;
+      }
+
+      return [...prevItems, { ...product, quantity: 1 }];
+    });
+    setIsOpen(true); // Open drawer when adding items
   };
 
-  const calculateSubtotal = () => {
-    return selectedItems.reduce((total, itemId) => {
-      const item = cartItems.find((i) => i.id === itemId);
-      return total + (item ? item.price * item.quantity : 0);
-    }, 0);
+  const removeFromCart = (itemId, size) => {
+    setCartItems(prevItems => 
+      prevItems.filter(item => !(item.id === itemId && item.size === size))
+    );
+  };
+
+  const updateQuantity = (itemId, size, newQuantity) => {
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.id === itemId && item.size === size
+          ? { ...item, quantity: newQuantity }
+          : item
+      )
+    );
   };
 
   return (
     <CartContext.Provider
       value={{
-        selectedItems,
-        setSelectedItems,
         cartItems,
-        getSelectedProducts,
-        calculateSubtotal,
+        setCartItems,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        isOpen,
+        setIsOpen
       }}
     >
       {children}
