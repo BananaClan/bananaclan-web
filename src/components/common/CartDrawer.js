@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../../context/CartContext";
-
+import { useNavigate } from "react-router-dom";
 const CartDrawer = () => {
-  // const [isOpen, setIsOpen] = useState(false);
-  const { cartItems, setCartItems, removeFromCart, isOpen, setIsOpen } = useCart();
+  const navigate = useNavigate();
 
+  // const [isOpen, setIsOpen] = useState(false);
+  const {
+    cartItems,
+    setCartItems,
+    removeFromCart,
+    isOpen,
+    setIsOpen,
+    updateQuantity,
+  } = useCart();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(null); // To track which dropdown is open
   // Initialize selectedItems based on cart items
   const [selectedItems, setSelectedItems] = useState(() =>
     cartItems.reduce(
@@ -56,10 +65,19 @@ const CartDrawer = () => {
 
   // Calculate totals based on selected items
   const totals = React.useMemo(() => {
-    const selectedCount = Object.values(selectedItems).filter(Boolean).length;
-    const totalPrice = cartItems.reduce((sum, item) => {
-      return sum + (selectedItems[item.id] ? item.price * item.quantity : 0);
-    }, 0);
+    const selectedCount = cartItems.reduce(
+      (count, cartItem) => (selectedItems[cartItem.id] ? count + 1 : count),
+      0
+    );
+
+    const totalPrice = cartItems.reduce(
+      (sum, cartItem) =>
+        selectedItems[cartItem.id]
+          ? sum + cartItem.price * cartItem.quantity
+          : sum,
+      0
+    );
+
     return { selectedCount, totalPrice };
   }, [selectedItems, cartItems]);
 
@@ -74,145 +92,229 @@ const CartDrawer = () => {
     removeFromCart(itemId, size);
   };
 
+  // In your CartDrawer component, update the handleQuantityChange function
+  // const handleQuantityChange = (itemId, newQuantity) => {
+  //   setCartItems((prevItems) =>
+  //     prevItems.map((item) =>
+  //       item.id === itemId ? { ...item, quantity: newQuantity } : item
+  //     )
+  //   );
+  // };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isDropdownOpen && !event.target.closest(".quantity-dropdown")) {
+        setIsDropdownOpen(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
   const CartItem = ({ item, isLast }) => (
     <div className={`py-4 border-b border-[#ECECEC] ${isLast ? "pb-4" : ""}`}>
       <div className="flex items-start">
-        {/* Checkbox and Image Container */}
-        <div className="relative">
-          <img
-            src={
-              selectedItems[item.id]
-                ? "/assets/icons/checkbox_checked.svg"
-                : "/assets/icons/checkbox_unchecked.svg"
-            }
-            className="absolute top-1 left-1 z-10 w-4 h-4 cursor-pointer"
-            onClick={() => handleCheckboxChange(item.id)}
-            alt="checkbox"
-          />
-          <img
-            src={item.image}
-            alt={item.name}
-            className="w-[152px] h-[152px] object-cover"
-            style={{ objectFit: "cover" }}
-          />
-        </div>
-
-        {/* Product Details */}
-        <div className="flex-1 ml-4 flex-col h-full">
-          <h3 className="font-satoshi text-[16px] font-normal">{item.name}</h3>
-          <div className="flex items-center mt-1">
-            <svg viewBox="0 0 24 24" className="w-4 h-4 text-yellow-400 mr-1">
-              <path
-                fill="currentColor"
-                d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-              />
-            </svg>
-            <p className="font-satoshi text-[12px] font-normal text-gray-600">
-              Sold by {item.seller}
-            </p>
+        <div
+          className="flex flex-1 cursor-pointer"
+          onClick={() => {
+            navigate(`/product/${item.id}`);
+            setIsOpen(false);  // Close the cart drawer when navigating
+          }}        >
+          {/* Checkbox and Image Container */}
+          <div className="relative">
+            <img
+              src={
+                selectedItems[item.id]
+                  ? "/assets/icons/checkbox_checked.svg"
+                  : "/assets/icons/checkbox_unchecked.svg"
+              }
+              className="absolute top-1 left-1 z-10 w-4 h-4 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent navigation when clicking checkbox
+                handleCheckboxChange(item.id);
+              }}
+              alt="checkbox"
+            />
+            <img
+              src={item.image}
+              alt={item.name}
+              className="w-[152px] h-[152px] object-cover"
+              style={{ objectFit: "cover" }}
+            />
           </div>
-          <div className="mt-2">
-            <div className="flex flex-col gap-[6px]">
-            <div className="flex-1">
-              <span className="text-base text-gray-900 font-light font-satoshi">Size: </span>
-              <span className="font-medium">{item.size}</span>
-            </div>
-            <div className="flex-1">
-              <span className="text-base text-gray-900 font-satoshi">Quantity: </span>
-              <span className="font-medium">{item.quantity}</span>
 
-            </div>
-            </div>
-            <div className="mt-auto flex flex-row h-[42px] items-end font-medium">
-              <p className="text-[20px] font-helveticaNeue font-medium">₹ </p>
-              <p className="text-[20px] text-bcBlack font-helveticaNeue  ml-1">
-                {item.price.toLocaleString()}
+          {/* Product Details */}
+          <div className="flex-1 ml-4 flex-col h-full">
+            <h3 className="font-satoshi text-[16px] font-normal">
+              {item.name}
+            </h3>
+            <div className="flex items-center mt-1">
+              <svg viewBox="0 0 24 24" className="w-4 h-4 text-yellow-400 mr-1">
+                <path
+                  fill="currentColor"
+                  d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                />
+              </svg>
+              <p className="font-satoshi text-[12px] font-normal text-gray-600">
+                Sold by {item.seller}
               </p>
             </div>
+            <div className="mt-2">
+              <div className="flex flex-col gap-[6px]">
+                <div className="flex-1">
+                  <span className="text-base text-gray-900 font-light font-satoshi">
+                    Size:{" "}
+                  </span>
+                  <span className="font-medium">{item.size}</span>
+                </div>
+                <div className="flex">
+                  <span className="text-base text-gray-900 font-satoshi">
+                    Quantity:&nbsp;
+                  </span>
+                  <div className="relative">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent navigation when clicking dropdown
+                        setIsDropdownOpen(item.id);
+                      }}
+                      className="flex items-center gap-1 text-medium font-medium"
+                    >
+                      {item.quantity} &nbsp;
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M2.5 4L6 7.5L9.5 4"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+
+                    {isDropdownOpen === item.id && (
+                      <div className="absolute z-10 w-16 mt-1 bg-white border border-gray-300 rounded shadow-lg quantity-dropdown"
+                      onClick={(e) => e.stopPropagation()}
+                      >
+                        {[1, 2, 3, 4, 5].map((num) => (
+                          <button
+                            key={num}
+                            onClick={() => {
+                              updateQuantity(item.id, item.size, num);
+                              setIsDropdownOpen(null);
+                            }}
+                            className="w-full px-2 py-1 text-left hover:bg-gray-100 text-sm"
+                          >
+                            {num}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-auto flex flex-row h-[42px] items-end font-medium">
+                <p className="text-[20px] font-helveticaNeue font-medium">₹ </p>
+                <p className="text-[20px] text-bcBlack font-helveticaNeue  ml-1">
+                  {(item.price * item.quantity).toLocaleString()}{" "}
+                  {/* Add the multiplication here */}
+                </p>
+              </div>
             </div>
+          </div>
 
-         
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-col items-center space-y-[12px] ml-4">
-          <button onClick={() => handleDeleteItem(item.id, item.size)}>
-          <svg
-              width="28"
-              height="28"
-              viewBox="0 0 28 28"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="0.388889"
-                y="0.388889"
-                width="27.2222"
-                height="27.2222"
-                rx="13.6111"
-                fill="white"
-              />
-              <rect
-                x="0.388889"
-                y="0.388889"
-                width="27.2222"
-                height="27.2222"
-                rx="13.6111"
-                stroke="#545454"
-                stroke-width="0.777778"
-              />
-              <g clip-path="url(#clip0_566_4804)">
-                <path
-                  d="M13.4576 7.77783L14.6859 7.78094C15.17 7.83943 15.5943 8.06717 15.944 8.4517C16.2296 8.7653 16.3796 9.12992 16.3883 9.5269H19.7949C19.9087 9.52756 20.0175 9.57334 20.0976 9.65419C20.1776 9.73503 20.2223 9.84434 20.2218 9.9581C20.2221 10.0718 20.1774 10.1809 20.0974 10.2616C20.0173 10.3423 19.9086 10.388 19.7949 10.3887L18.6525 10.3881V17.6226C18.6525 19.2049 18.0621 20.2223 16.7604 20.2223H11.1492C9.84748 20.2223 9.26632 19.2105 9.26632 17.6226V10.3881H8.20419C8.09075 10.3874 7.98219 10.3419 7.90221 10.2614C7.82223 10.181 7.77734 10.0722 7.77734 9.95872C7.77734 9.72041 7.96837 9.52814 8.20419 9.52814H11.6077C11.6165 9.20832 11.7353 8.88414 11.9525 8.5637C12.276 8.08583 12.7813 7.82388 13.4576 7.77783ZM17.7989 10.3881H10.1194V17.6226C10.1194 18.7974 10.4429 19.3611 11.1492 19.3611H16.7604C17.4691 19.3611 17.7995 18.7924 17.7995 17.6226L17.7989 10.3881ZM11.9562 11.7227C12.1914 11.7227 12.3824 11.9156 12.3824 12.1533V17.1622C12.3827 17.2758 12.338 17.385 12.258 17.4657C12.178 17.5464 12.0692 17.5921 11.9556 17.5928C11.842 17.5919 11.7334 17.5462 11.6536 17.4655C11.5737 17.3848 11.529 17.2757 11.5293 17.1622V12.1533C11.5293 11.9156 11.721 11.7227 11.9562 11.7227ZM13.6517 11.7227C13.8882 11.7227 14.0786 11.9156 14.0786 12.1533V17.1622C14.0789 17.2758 14.0342 17.385 13.9542 17.4657C13.8741 17.5464 13.7654 17.5921 13.6517 17.5928C13.5382 17.5919 13.4296 17.5462 13.3497 17.4655C13.2698 17.3848 13.2252 17.2757 13.2255 17.1622V12.1533C13.2255 11.9156 13.4165 11.7227 13.6517 11.7227ZM15.3492 11.7227C15.5844 11.7227 15.7754 11.9156 15.7754 12.1533V17.1622C15.7757 17.2757 15.7311 17.3848 15.6512 17.4655C15.5713 17.5462 15.4627 17.5919 15.3492 17.5928C15.2355 17.5921 15.1268 17.5464 15.0467 17.4657C14.9667 17.385 14.922 17.2758 14.9223 17.1622V12.1533C14.922 12.0396 14.9667 11.9305 15.0467 11.8498C15.1268 11.7691 15.2355 11.7234 15.3492 11.7227ZM13.4869 8.63774C13.0874 8.66574 12.8242 8.80201 12.6568 9.04965C12.5336 9.23072 12.472 9.38752 12.4621 9.52752L15.5346 9.5269C15.5259 9.34583 15.4543 9.18654 15.3156 9.0341C15.1003 8.79765 14.8613 8.66948 14.6355 8.63899L13.4869 8.63774Z"
-                  fill="#545454"
+          {/* Action Buttons */}
+          <div
+            className="flex flex-col items-center space-y-[12px] ml-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button onClick={() => handleDeleteItem(item.id, item.size)}>
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 28 28"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="0.388889"
+                  y="0.388889"
+                  width="27.2222"
+                  height="27.2222"
+                  rx="13.6111"
+                  fill="white"
                 />
-              </g>
-              <defs>
-                <clipPath id="clip0_566_4804">
-                  <rect
-                    width="12.4444"
-                    height="12.4444"
-                    fill="white"
-                    transform="translate(7.77734 7.77783)"
+                <rect
+                  x="0.388889"
+                  y="0.388889"
+                  width="27.2222"
+                  height="27.2222"
+                  rx="13.6111"
+                  stroke="#545454"
+                  stroke-width="0.777778"
+                />
+                <g clip-path="url(#clip0_566_4804)">
+                  <path
+                    d="M13.4576 7.77783L14.6859 7.78094C15.17 7.83943 15.5943 8.06717 15.944 8.4517C16.2296 8.7653 16.3796 9.12992 16.3883 9.5269H19.7949C19.9087 9.52756 20.0175 9.57334 20.0976 9.65419C20.1776 9.73503 20.2223 9.84434 20.2218 9.9581C20.2221 10.0718 20.1774 10.1809 20.0974 10.2616C20.0173 10.3423 19.9086 10.388 19.7949 10.3887L18.6525 10.3881V17.6226C18.6525 19.2049 18.0621 20.2223 16.7604 20.2223H11.1492C9.84748 20.2223 9.26632 19.2105 9.26632 17.6226V10.3881H8.20419C8.09075 10.3874 7.98219 10.3419 7.90221 10.2614C7.82223 10.181 7.77734 10.0722 7.77734 9.95872C7.77734 9.72041 7.96837 9.52814 8.20419 9.52814H11.6077C11.6165 9.20832 11.7353 8.88414 11.9525 8.5637C12.276 8.08583 12.7813 7.82388 13.4576 7.77783ZM17.7989 10.3881H10.1194V17.6226C10.1194 18.7974 10.4429 19.3611 11.1492 19.3611H16.7604C17.4691 19.3611 17.7995 18.7924 17.7995 17.6226L17.7989 10.3881ZM11.9562 11.7227C12.1914 11.7227 12.3824 11.9156 12.3824 12.1533V17.1622C12.3827 17.2758 12.338 17.385 12.258 17.4657C12.178 17.5464 12.0692 17.5921 11.9556 17.5928C11.842 17.5919 11.7334 17.5462 11.6536 17.4655C11.5737 17.3848 11.529 17.2757 11.5293 17.1622V12.1533C11.5293 11.9156 11.721 11.7227 11.9562 11.7227ZM13.6517 11.7227C13.8882 11.7227 14.0786 11.9156 14.0786 12.1533V17.1622C14.0789 17.2758 14.0342 17.385 13.9542 17.4657C13.8741 17.5464 13.7654 17.5921 13.6517 17.5928C13.5382 17.5919 13.4296 17.5462 13.3497 17.4655C13.2698 17.3848 13.2252 17.2757 13.2255 17.1622V12.1533C13.2255 11.9156 13.4165 11.7227 13.6517 11.7227ZM15.3492 11.7227C15.5844 11.7227 15.7754 11.9156 15.7754 12.1533V17.1622C15.7757 17.2757 15.7311 17.3848 15.6512 17.4655C15.5713 17.5462 15.4627 17.5919 15.3492 17.5928C15.2355 17.5921 15.1268 17.5464 15.0467 17.4657C14.9667 17.385 14.922 17.2758 14.9223 17.1622V12.1533C14.922 12.0396 14.9667 11.9305 15.0467 11.8498C15.1268 11.7691 15.2355 11.7234 15.3492 11.7227ZM13.4869 8.63774C13.0874 8.66574 12.8242 8.80201 12.6568 9.04965C12.5336 9.23072 12.472 9.38752 12.4621 9.52752L15.5346 9.5269C15.5259 9.34583 15.4543 9.18654 15.3156 9.0341C15.1003 8.79765 14.8613 8.66948 14.6355 8.63899L13.4869 8.63774Z"
+                    fill="#545454"
                   />
-                </clipPath>
-              </defs>
-            </svg>
-          </button>
-          <button>
-          <svg
-              width="28"
-              height="28"
-              viewBox="0 0 28 28"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="0.388889"
-                y="0.388889"
-                width="27.2222"
-                height="27.2222"
-                rx="13.6111"
-                fill="white"
-              />
-              <rect
-                x="0.388889"
-                y="0.388889"
-                width="27.2222"
-                height="27.2222"
-                rx="13.6111"
-                stroke="#545454"
-                stroke-width="0.777778"
-              />
-              <path
-                d="M14.25 20C14.25 20 8 16.5 8 12.25C8 11.4987 8.26031 10.7706 8.73664 10.1895C9.21297 9.60851 9.87589 9.21046 10.6126 9.06312C11.3494 8.91577 12.1144 9.02823 12.7775 9.38136C13.4407 9.73449 13.961 10.3065 14.25 11V11C14.539 10.3065 15.0593 9.73449 15.7225 9.38136C16.3856 9.02823 17.1506 8.91577 17.8874 9.06312C18.6241 9.21046 19.287 9.60851 19.7634 10.1895C20.2397 10.7706 20.5 11.4987 20.5 12.25C20.5 16.5 14.25 20 14.25 20Z"
-                stroke="#545454"
-                stroke-width="0.857143"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
+                </g>
+                <defs>
+                  <clipPath id="clip0_566_4804">
+                    <rect
+                      width="12.4444"
+                      height="12.4444"
+                      fill="white"
+                      transform="translate(7.77734 7.77783)"
+                    />
+                  </clipPath>
+                </defs>
+              </svg>
+            </button>
+            <button>
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 28 28"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="0.388889"
+                  y="0.388889"
+                  width="27.2222"
+                  height="27.2222"
+                  rx="13.6111"
+                  fill="white"
+                />
+                <rect
+                  x="0.388889"
+                  y="0.388889"
+                  width="27.2222"
+                  height="27.2222"
+                  rx="13.6111"
+                  stroke="#545454"
+                  stroke-width="0.777778"
+                />
+                <path
+                  d="M14.25 20C14.25 20 8 16.5 8 12.25C8 11.4987 8.26031 10.7706 8.73664 10.1895C9.21297 9.60851 9.87589 9.21046 10.6126 9.06312C11.3494 8.91577 12.1144 9.02823 12.7775 9.38136C13.4407 9.73449 13.961 10.3065 14.25 11V11C14.539 10.3065 15.0593 9.73449 15.7225 9.38136C16.3856 9.02823 17.1506 8.91577 17.8874 9.06312C18.6241 9.21046 19.287 9.60851 19.7634 10.1895C20.2397 10.7706 20.5 11.4987 20.5 12.25C20.5 16.5 14.25 20 14.25 20Z"
+                  stroke="#545454"
+                  stroke-width="0.857143"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
