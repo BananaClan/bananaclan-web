@@ -75,15 +75,15 @@ const CartDrawer = () => {
   };
 
   const CartItem = ({ item, isLast }) => (
-    <div className={`py-4 border-b border-[#ECECEC] ${isLast ? "pb-10" : ""}`}>
+    <div className={`py-4 border-b border-[#ECECEC] ${isLast ? "pb-4" : ""}`}>
       <div className="flex items-start">
         {/* Checkbox and Image Container */}
         <div className="relative">
           <img
             src={
               selectedItems[item.id]
-                ? "assets/icons/checkbox_checked.svg"
-                : "assets/icons/checkbox_unchecked.svg"
+                ? "/assets/icons/checkbox_checked.svg"
+                : "/assets/icons/checkbox_unchecked.svg"
             }
             className="absolute top-1 left-1 z-10 w-4 h-4 cursor-pointer"
             onClick={() => handleCheckboxChange(item.id)}
@@ -112,25 +112,32 @@ const CartDrawer = () => {
             </p>
           </div>
           <div className="mt-2">
+            <div className="flex flex-col gap-[6px]">
             <div className="flex-1">
-              <span className="text-sm text-gray-600">Size: {item.size}</span>
+              <span className="text-base text-gray-900 font-light font-satoshi">Size: </span>
+              <span className="font-medium">{item.size}</span>
             </div>
-            <div className="flex ">
-              <span className="text-sm text-gray-600">Quantity: {item.quantity}</span>
+            <div className="flex-1">
+              <span className="text-base text-gray-900 font-satoshi">Quantity: </span>
+              <span className="font-medium">{item.quantity}</span>
+
             </div>
-            <div className="mt-auto flex flex-row items-baseline">
+            </div>
+            <div className="mt-auto flex flex-row h-[42px] items-end font-medium">
               <p className="text-[20px] font-helveticaNeue font-medium">₹ </p>
-              <p className="text-[20px] text-bcBlack font-satoshi font-Medium ml-1">
+              <p className="text-[20px] text-bcBlack font-helveticaNeue  ml-1">
                 {item.price.toLocaleString()}
               </p>
             </div>
-          </div>
+            </div>
+
+         
         </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col items-center space-y-[12px] ml-4">
           <button onClick={() => handleDeleteItem(item.id, item.size)}>
-            <svg
+          <svg
               width="28"
               height="28"
               viewBox="0 0 28 28"
@@ -156,7 +163,7 @@ const CartDrawer = () => {
               />
               <g clip-path="url(#clip0_566_4804)">
                 <path
-                  d="M13.4576 7.77783L14.6859 7.78094C15.17 7.83943 15.5943 8.06717 15.944 8.4517C16.2296 8.7653 16.3796 9.12992 16.3883 9.5269H19.7949C19.9087 9.52756 20.0175 9.57334 20.0976 9.65419C20.1776 9.73503 20.2223 9.84434 20.2218 9.9581C20.2221 10.0718 20.1774 10.1809 20.0974 10.2616C20.0173 10.3423 19.9086 10.388 19.7949 10.3887L18.6525 10.3881V17.6226C18.6525 19.2049 18.0621 20.2223 16.7604 20.2223H11.1492C9.84748 20.2223 9.26632 19.2105 9.26632 17.6226V10.3881H8.20419C8.09075 10.3874 7.98219 10.3419 7.90221 10.2614C7.82223 10.181 7.77734 10.0722 7.77734 9.95872C7.77734 9.72041 7.96837 9.52814 8.20419 9.52814H11.6077C11.6165 9.20832 11.7353 8.88414 11.9525 8.5637C12.276 8.08583 12.7813 7.82388 13.4576 7.77783Z"
+                  d="M13.4576 7.77783L14.6859 7.78094C15.17 7.83943 15.5943 8.06717 15.944 8.4517C16.2296 8.7653 16.3796 9.12992 16.3883 9.5269H19.7949C19.9087 9.52756 20.0175 9.57334 20.0976 9.65419C20.1776 9.73503 20.2223 9.84434 20.2218 9.9581C20.2221 10.0718 20.1774 10.1809 20.0974 10.2616C20.0173 10.3423 19.9086 10.388 19.7949 10.3887L18.6525 10.3881V17.6226C18.6525 19.2049 18.0621 20.2223 16.7604 20.2223H11.1492C9.84748 20.2223 9.26632 19.2105 9.26632 17.6226V10.3881H8.20419C8.09075 10.3874 7.98219 10.3419 7.90221 10.2614C7.82223 10.181 7.77734 10.0722 7.77734 9.95872C7.77734 9.72041 7.96837 9.52814 8.20419 9.52814H11.6077C11.6165 9.20832 11.7353 8.88414 11.9525 8.5637C12.276 8.08583 12.7813 7.82388 13.4576 7.77783ZM17.7989 10.3881H10.1194V17.6226C10.1194 18.7974 10.4429 19.3611 11.1492 19.3611H16.7604C17.4691 19.3611 17.7995 18.7924 17.7995 17.6226L17.7989 10.3881ZM11.9562 11.7227C12.1914 11.7227 12.3824 11.9156 12.3824 12.1533V17.1622C12.3827 17.2758 12.338 17.385 12.258 17.4657C12.178 17.5464 12.0692 17.5921 11.9556 17.5928C11.842 17.5919 11.7334 17.5462 11.6536 17.4655C11.5737 17.3848 11.529 17.2757 11.5293 17.1622V12.1533C11.5293 11.9156 11.721 11.7227 11.9562 11.7227ZM13.6517 11.7227C13.8882 11.7227 14.0786 11.9156 14.0786 12.1533V17.1622C14.0789 17.2758 14.0342 17.385 13.9542 17.4657C13.8741 17.5464 13.7654 17.5921 13.6517 17.5928C13.5382 17.5919 13.4296 17.5462 13.3497 17.4655C13.2698 17.3848 13.2252 17.2757 13.2255 17.1622V12.1533C13.2255 11.9156 13.4165 11.7227 13.6517 11.7227ZM15.3492 11.7227C15.5844 11.7227 15.7754 11.9156 15.7754 12.1533V17.1622C15.7757 17.2757 15.7311 17.3848 15.6512 17.4655C15.5713 17.5462 15.4627 17.5919 15.3492 17.5928C15.2355 17.5921 15.1268 17.5464 15.0467 17.4657C14.9667 17.385 14.922 17.2758 14.9223 17.1622V12.1533C14.922 12.0396 14.9667 11.9305 15.0467 11.8498C15.1268 11.7691 15.2355 11.7234 15.3492 11.7227ZM13.4869 8.63774C13.0874 8.66574 12.8242 8.80201 12.6568 9.04965C12.5336 9.23072 12.472 9.38752 12.4621 9.52752L15.5346 9.5269C15.5259 9.34583 15.4543 9.18654 15.3156 9.0341C15.1003 8.79765 14.8613 8.66948 14.6355 8.63899L13.4869 8.63774Z"
                   fill="#545454"
                 />
               </g>
@@ -173,7 +180,7 @@ const CartDrawer = () => {
             </svg>
           </button>
           <button>
-            <svg
+          <svg
               width="28"
               height="28"
               viewBox="0 0 28 28"

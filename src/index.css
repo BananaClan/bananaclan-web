@@ -16,6 +16,13 @@
   font-style: normal;
 }
 @font-face {
+  font-family: "Satoshi-b";
+  src: url("../public/assets/fonts/Satoshi_Complete/FontshareKit-2501000448/Satoshi/Fonts/OTF/Satoshi-Bold.otf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
   font-family: "BebasNeue";
   src: url("../public/assets/fonts/BebasNeue-Regular.ttf") format("truetype");
   font-weight: normal;

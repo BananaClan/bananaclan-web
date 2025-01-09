@@ -13,7 +13,7 @@ import {
 import { ProductSlider } from "../components/common/ProductSlider";
 
 const ProductDetailPage = () => {
-  const { addToCart, setIsOpen } = useCart();  // Add setIsOpen here
+  const { addToCart, setIsOpen } = useCart(); // Add setIsOpen here
 
   const { productId } = useParams(); // Get the product ID from URL
   const [productData, setProductData] = useState(null);
@@ -255,10 +255,10 @@ const ProductDetailPage = () => {
   return (
     <div className="flex flex-col min-h-screen px-4 md:px-6 lg:px-8">
       {/* Main content */}
-      <main className="flex-grow  ">
+      <main className="flex-grow mt-8 ">
         <div className=" px-4 py-8 container mx-auto max-w-[1512px] ">
           {/* Breadcrumbs */}
-          <div className="max-w-[1320px] mx-auto">
+          {/* <div className="max-w-[1320px] mx-auto">
             <div className="flex flex-row text-sm font-normal mb-5">
               <div className="font-satoshi">
                 Home &gt; {currentProduct.brand} &gt; {currentProduct.model}{" "}
@@ -266,13 +266,14 @@ const ProductDetailPage = () => {
               </div>
               <div className="font-medium">{currentProduct.name}</div>
             </div>
-          </div>
+          </div> */}
 
           {/* Product section */}
-          <div className="flex flex-col md:flex-row   max-w-[1320px] mx-auto">
+          <div className="flex flex-col md:flex-row  max-w-[1320px] mx-auto">
             {/* Image gallery */}
-            <div className="md:w-1/2 flex gap-4">
-              <div className="flex flex-col">
+            <div className="md:w-1/2 flex gap-4 h-fit sticky top-0">
+            
+              <div className="flex flex-col ">
                 {currentProduct.images.map((img, index) => (
                   <img
                     key={index}
@@ -283,13 +284,14 @@ const ProductDetailPage = () => {
                   />
                 ))}
               </div>
+              <div className="relative w-[535px] h-[626px]">
               <img
                 src={currentProduct.images[mainImageIndex]?.url}
                 alt={currentProduct.images[mainImageIndex]?.altText}
-                className="w-[535px] h-[626px] object-cover relative"
+                className="w-[535px] h-[626px] object-cover  "
               />
               {/* Navigation arrows */}
-              <div className="w-[96px] absolute bottom-[10.55vh] right-[54.5vw] flex gap-4">
+              <div className="w-[96px] absolute bottom-[5vh] right-[3vw] flex gap-4">
                 <button
                   onClick={prevImage}
                   className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50"
@@ -327,10 +329,11 @@ const ProductDetailPage = () => {
                   </svg>
                 </button>
               </div>
+             </div>
             </div>
 
             {/* Product info */}
-            <div className="w-full md:w-[498px] h-[626px] overflow-y-scroll hide-scrollbar">
+            <div className="w-full md:w-[498px] h-fit">
               <div className="flex flex-row justify-between">
                 <h1 className="text-2xl leading-8 mb-2 font-satoshi ">
                   {currentProduct.name}
@@ -432,7 +435,7 @@ const ProductDetailPage = () => {
                 </div>
               </div>
               <p className="text-2xl leading-[29.3px] font-helvetica font-medium mb-1 flex gap-1">
-                ₹ <div className="font-satoshi">{currentProduct.price}</div>
+                ₹ <div className="font-satoshi_B">{currentProduct.price}</div>
               </p>
               <p className="text-base font-normal font-satoshi text-gray-500 ">
                 Inclusive of all taxes
@@ -463,15 +466,15 @@ const ProductDetailPage = () => {
               </div> */}
 
               {/* Similar Products as Color Selection */}
-              <div className="my-7">
-                <h2 className="font-semibold mb-2">Color</h2>
+              <div className="pl-1 my-7">
+                <h2 className="font-satoshi text-base leading-5 mb-2">Color : {currentProduct.color}</h2>
                 <div className="flex gap-[7px]">
                   {allProducts.map((product, index) => (
                     <button
                       key={product._id}
                       className={`w-[70px] h-[70px] relative ${
                         currentProduct._id === product._id
-                          ? "ring-2 ring-blue-500 after:absolute after:inset-0 after:bg-black/20"
+                          ? "ring-2 ring-black after:absolute after:inset-0 after:bg-black/20"
                           : ""
                       }`}
                       onClick={() => handleProductSwitch(product)}
