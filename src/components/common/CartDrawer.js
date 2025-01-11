@@ -14,6 +14,8 @@ const CartDrawer = () => {
     updateQuantity,
   } = useCart();
   const [isDropdownOpen, setIsDropdownOpen] = useState(null); // To track which dropdown is open
+  const [showDeleteModal, setShowDeleteModal] = useState(null); // Track which item's delete modal is shown
+
   // Initialize selectedItems based on cart items
   const [selectedItems, setSelectedItems] = useState(() =>
     cartItems.reduce(
@@ -90,6 +92,7 @@ const CartDrawer = () => {
 
   const handleDeleteItem = (itemId, size) => {
     removeFromCart(itemId, size);
+    setShowDeleteModal(null); // Close the modal after deletion
   };
 
   // In your CartDrawer component, update the handleQuantityChange function
@@ -114,6 +117,43 @@ const CartDrawer = () => {
     };
   }, [isDropdownOpen]);
 
+  const handleWishlist = (itemId) => {
+    // Implement wishlist functionality here
+    console.log("Added to wishlist:", itemId);
+  };
+  const DeleteModal = ({ item }) => (
+    <div className="absolute inset-0 bg-black bg-opacity-50 z-[99] flex items-center justify-center">
+      <div className="bg-white rounded-lg max-w-md w-full mx-4">
+        <div className="p-6">
+          <h2 className="font-satoshi text-[20px] font-medium mb-2">
+            Remove from Cart
+          </h2>
+          <p className="font-satoshi text-[16px] font-normal mb-6">
+            Are you sure you want to remove this sneaker?
+          </p>
+
+          <div className="flex space-x-4">
+            <button
+              onClick={() => handleDeleteItem(item.id, item.size)}
+              className="flex-1 py-3 px-4 border border-black hover:bg-gray-50 font-satoshi text-[16px] font-medium"
+            >
+              REMOVE
+            </button>
+            <button
+              onClick={() => {
+                handleWishlist(item.id);
+                setShowDeleteModal(null);
+              }}
+              className="flex-1 py-3 px-4 bg-black text-white hover:bg-gray-900 font-satoshi text-[16px] font-medium"
+            >
+              MOVE TO WISHLIST
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+  
   const CartItem = ({ item, isLast }) => (
     <div className={`py-4 border-b border-[#ECECEC] ${isLast ? "pb-4" : ""}`}>
       <div className="flex items-start">
@@ -237,7 +277,7 @@ const CartDrawer = () => {
             className="flex flex-col items-center space-y-[12px] ml-4"
             onClick={(e) => e.stopPropagation()}
           >
-            <button onClick={() => handleDeleteItem(item.id, item.size)}>
+            <button onClick={() => setShowDeleteModal(item.id)}>
               <svg
                 width="28"
                 height="28"
@@ -437,7 +477,19 @@ const CartDrawer = () => {
             </button>
           </div>
         </div>
+
+         {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+      <div className="absolute inset-0 top-0 right-0 h-full w-[483px]">
+      <DeleteModal
+        item={cartItems.find((item) => item.id === showDeleteModal)}
+      />
+    </div>
+      )}
       </div>
+
+
+     
     </div>
   );
 };
