@@ -110,7 +110,7 @@ const BrandCollection = ({ brand, logo }) => {
             alt={`${brand} logo`}
             className="w-[128px] h-[96px] mr-4"
           />
-          <h2 className="font-futurac font-condensed text-5xl leading-[54.11px]">
+          <h2 className="font-futuraCondensed text-[48px] leading-[54.11px] block -mb-1">
             {brand} COLLECTIONS
           </h2>
         </div>
@@ -182,34 +182,34 @@ const BrandCollection = ({ brand, logo }) => {
             </div>
           </div>
           <div className="relative overflow-visible">
-          <div
-    ref={scrollContainerRef}
-    className="flex overflow-x-auto hide-scrollbar gap-[16px] py-20 -my-20"
-    style={{
-      scrollSnapType: 'x mandatory',
-      WebkitOverflowScrolling: 'touch'
-    }}
-  >
-            {NewArrivalproducts.map((product) => {
-              return (
-                <div
-  key={product.id}
-  className="flex-shrink-0 relative"
-  style={{
-    width: cardWidth,
-    scrollSnapAlign: 'start'
-  }}
->
-                  <ProductCard
-                    imageUrl={product.imageUrl}
-                    productName={product.productName}
-                    price={product.price}
-                    navigationUrl={`/product/${product.id}`}
-                  />
-                </div>
-              );
-            })}
-           </div>
+            <div
+              ref={scrollContainerRef}
+              className="flex overflow-x-auto hide-scrollbar gap-[16px] py-20 -my-20"
+              style={{
+                scrollSnapType: "x mandatory",
+                WebkitOverflowScrolling: "touch",
+              }}
+            >
+              {NewArrivalproducts.map((product) => {
+                return (
+                  <div
+                    key={product.id}
+                    className="flex-shrink-0 relative"
+                    style={{
+                      width: cardWidth,
+                      scrollSnapAlign: "start",
+                    }}
+                  >
+                    <ProductCard
+                      imageUrl={product.imageUrl}
+                      productName={product.productName}
+                      price={product.price}
+                      navigationUrl={`/product/${product.id}`}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

@@ -9,6 +9,14 @@
   font-style: normal;
 }
 @font-face {
+  font-family: 'FuturaCondensed';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+vertical-align: baseline;
+  src: local('FuturaCondensed'), url('../public/assets/fonts/futura-condensed-pt-medium-589e44ed1e3a5.woff') format('woff');
+  }
+@font-face {
   font-family: "Satoshi";
   src: url("../public/assets/fonts/Satoshi_Complete/Satoshi_Complete/Fonts/TTF/Satoshi-Variable.ttf")
     format("truetype");

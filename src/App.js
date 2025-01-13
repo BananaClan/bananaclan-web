@@ -1,9 +1,9 @@
 import React from "react";
-import { ClerkProvider ,SignedIn,SignedOut} from "@clerk/clerk-react";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 // import SellerProfilePage from "./pages/SellerProfilePage";
-import ProductDetailPage from "./pages/Sneaker Marketplace Product Detail Page";
+import ProductDetailPage from "./pages/ProductDetailsPage";
 import BagPage from "./pages/BagPage";
 import ShippingPage from "./pages/ShippingPage";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
@@ -13,6 +13,7 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import NavBar from "./components/common/NavBar";
 
 import AuthPage from "./pages/AuthPage";
+import MobileProductDetailPage from "./pages/MBProductDeatailsPage";
 
 const App = () => {
   const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
@@ -35,8 +36,17 @@ const App = () => {
                 {/* <Route path="/productdetail" element={<ProductDetailPage />} /> */}
                 <Route path="/auth" element={<AuthPage />} />
 
-  {/* Update the product detail route to accept an ID parameter */}
-  <Route path="/product/:productId" element={<ProductDetailPage />} />
+                {/* Update the product detail route to accept an ID parameter */}
+                <Route
+                  path="/product/:productId"
+                  element={
+                    window.innerWidth <= 440 && window.innerWidth >= 320 ? (
+                      <MobileProductDetailPage />
+                    ) : (
+                      <ProductDetailPage />
+                    )
+                  }
+                />
 
                 {/* Protected routes that require authentication */}
                 <Route
@@ -80,6 +90,5 @@ const App = () => {
     </ClerkProvider>
   );
 };
-
 
 export default App;
