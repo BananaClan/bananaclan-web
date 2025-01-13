@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { productApi } from "../api/productApi";
 import { useCart } from "../context/CartContext";
-
-import { Footer } from "../components/common/Footer";
 import FAQSection from "../components/landingPagecomponents/FAQSection";
 import {
   NewArrivalproducts,
@@ -13,17 +11,11 @@ import {
 import { ProductSlider } from "../components/common/ProductSlider";
 
 const ProductDetailPage = () => {
-  const { addToCart, setIsOpen } = useCart();  // Add setIsOpen here
-
+  const { addToCart, setIsOpen, cart } = useCart(); // Add setIsOpen here
   const { productId } = useParams(); // Get the product ID from URL
   const [productData, setProductData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // const [selectedColor, setSelectedColor] = useState(0);
-  // const [selectedSize, setSelectedSize] = useState(null);
-  // const [expandedSections, setExpandedSections] = useState([]);
-  // const [mainImageIndex, setMainImageIndex] = useState(0);
 
   // Track all available products (main + similar)
   const [allProducts, setAllProducts] = useState([]);
@@ -32,6 +24,25 @@ const ProductDetailPage = () => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [expandedSections, setExpandedSections] = useState([]);
   const [mainImageIndex, setMainImageIndex] = useState(0);
+
+  // Add state to track if current selection is in cart
+  const [isInCart, setIsInCart] = useState(false);
+
+  // Check if current selection is in cart whenever size or cart changes
+  useEffect(() => {
+    if (currentProduct && selectedSize && Array.isArray(cart)) {
+      const itemInCart = cart.some(
+        (item) => item.id === currentProduct._id && item.size === selectedSize
+      );
+      setIsInCart(itemInCart);
+    } else {
+      setIsInCart(false);
+    }
+  }, [currentProduct, selectedSize, cart]);
+
+  const handleSizeSelect = (size) => {
+    setSelectedSize(size);
+  };
 
   // Fetch product data when component mounts
   useEffect(() => {
@@ -58,105 +69,6 @@ const ProductDetailPage = () => {
       fetchProductDetails();
     }
   }, [productId]);
-
-  // const product = {
-  //   name: "Adidas Samba Brazil Edition",
-  //   price: 3099,
-  //   colors: [
-  //     {
-  //       name: "Blue",
-  //       image: "/assets/images/WRimage.jpg",
-  //       productImages: [
-  //         "/assets/images/WRimage.jpg",
-  //         "/assets/images/WRimage.jpg",
-  //         "/assets/images/WRimage.jpg",
-  //         "/assets/images/WRimage.jpg",
-  //       ],
-  //     },
-  //     {
-  //       name: "Black",
-  //       image: "/assets/images/NewArrivalImage1.png",
-  //       productImages: [
-  //         "/assets/images/NewArrivalImage1.png",
-  //         "/assets/images/NewArrivalImage1.png",
-  //         "/assets/images/NewArrivalImage1.png",
-  //         "/assets/images/NewArrivalImage1.png",
-  //       ],
-  //     },
-  //     {
-  //       name: "White",
-  //       image: "/assets/images/WRimage.jpg",
-  //       productImages: [
-  //         "/assets/images/WRimage.jpg",
-  //         "/assets/images/WRimage.jpg",
-  //         "/assets/images/WRimage.jpg",
-  //         "/assets/images/WRimage.jpg",
-  //       ],
-  //     },
-  //     {
-  //       name: "Red",
-  //       image: "/assets/images/NewArrivalImage1.png",
-  //       productImages: [
-  //         "/assets/images/NewArrivalImage1.png",
-  //         "/assets/images/NewArrivalImage1.png",
-  //         "/assets/images/NewArrivalImage1.png",
-  //         "/assets/images/NewArrivalImage1.png",
-  //       ],
-  //     },
-  //     {
-  //       name: "Green",
-  //       image: "/assets/images/WeRecommendImage.jpg",
-  //       productImages: [
-  //         "/assets/images/WeRecommendImage.jpg",
-  //         "/assets/images/WeRecommendImage.jpg",
-  //         "/assets/images/WeRecommendImage.jpg",
-  //         "/assets/images/WeRecommendImage.jpg",
-  //       ],
-  //     },
-  //   ],
-  //   sizes: [
-  //     "UK 6",
-  //     "UK 6.5",
-  //     "UK 7",
-  //     "UK 7.5",
-  //     "UK 8",
-  //     "UK 8.5",
-  //     "UK 9",
-  //     "UK 9.5",
-  //     "UK 10",
-  //     "UK 10.5",
-  //     "UK 11",
-  //     "UK 11.5",
-  //     "UK 12",
-  //   ],
-  //   availableSizes: [
-  //     "UK 6",
-  //     "UK 6.5",
-  //     "UK 8",
-  //     "UK 8.5",
-  //     "UK 9",
-  //     "UK 9.5",
-  //     "UK 10",
-  //     "UK 10.5",
-  //     "UK 11",
-  //     "UK 12",
-  //   ],
-  // };
-
-  // Initialize images array with the first color's productImages
-  // const [currentImages, setCurrentImages] = useState(
-  //   productData.colors[0].productImages
-  // );
-
-  // const handleColorSelect = (index) => {
-  //   setSelectedColor(index);
-  //   setMainImageIndex(0); // Reset to first image position
-  //   // setCurrentImages(product.colors[index].productImages);
-  // };
-
-  const handleSizeSelect = (size) => {
-    setSelectedSize(size);
-  };
 
   const ALL_POSSIBLE_SIZES = [
     "UK 6",
@@ -239,6 +151,18 @@ const ProductDetailPage = () => {
       return;
     }
 
+    // Safely check if item is in cart
+    const isItemInCart =
+      Array.isArray(cart) &&
+      cart.some(
+        (item) => item.id === currentProduct._id && item.size === selectedSize
+      );
+    if (isItemInCart) {
+      // If item is already in cart, just open the drawer
+      setIsOpen(true);
+      return;
+    }
+    // Only execute this block if item is not in cart
     const cartItem = {
       id: currentProduct._id,
       name: currentProduct.name,
@@ -248,17 +172,19 @@ const ProductDetailPage = () => {
       price: currentProduct.price,
       image: currentProduct.images[0].url,
     };
+
     addToCart(cartItem);
+    setIsInCart(true);
     setIsOpen(true);
   };
 
   return (
     <div className="flex flex-col min-h-screen px-4 md:px-6 lg:px-8">
       {/* Main content */}
-      <main className="flex-grow  ">
+      <main className="flex-grow mt-8 ">
         <div className=" px-4 py-8 container mx-auto max-w-[1512px] ">
           {/* Breadcrumbs */}
-          <div className="max-w-[1320px] mx-auto">
+          {/* <div className="max-w-[1320px] mx-auto">
             <div className="flex flex-row text-sm font-normal mb-5">
               <div className="font-satoshi">
                 Home &gt; {currentProduct.brand} &gt; {currentProduct.model}{" "}
@@ -266,13 +192,13 @@ const ProductDetailPage = () => {
               </div>
               <div className="font-medium">{currentProduct.name}</div>
             </div>
-          </div>
+          </div> */}
 
           {/* Product section */}
-          <div className="flex flex-col md:flex-row   max-w-[1320px] mx-auto">
+          <div className="flex flex-col md:flex-row  max-w-[1320px] mx-auto">
             {/* Image gallery */}
-            <div className="md:w-1/2 flex gap-4">
-              <div className="flex flex-col">
+            <div className="md:w-1/2 flex gap-4 h-fit sticky top-0">
+              <div className="flex flex-col ">
                 {currentProduct.images.map((img, index) => (
                   <img
                     key={index}
@@ -283,54 +209,56 @@ const ProductDetailPage = () => {
                   />
                 ))}
               </div>
-              <img
-                src={currentProduct.images[mainImageIndex]?.url}
-                alt={currentProduct.images[mainImageIndex]?.altText}
-                className="w-[535px] h-[626px] object-cover relative"
-              />
-              {/* Navigation arrows */}
-              <div className="w-[96px] absolute bottom-[10.55vh] right-[54.5vw] flex gap-4">
-                <button
-                  onClick={prevImage}
-                  className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              <div className="relative w-[535px] h-[626px]">
+                <img
+                  src={currentProduct.images[mainImageIndex]?.url}
+                  alt={currentProduct.images[mainImageIndex]?.altText}
+                  className="w-[535px] h-[626px] object-cover  "
+                />
+                {/* Navigation arrows */}
+                <div className="w-[96px] absolute bottom-[5vh] right-[3vw] flex gap-4">
+                  <button
+                    onClick={prevImage}
+                    className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50"
                   >
-                    <path d="M15 18l-6-6 6-6" />
-                  </svg>
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50"
                   >
-                    <path d="M9 18l6-6-6-6" />
-                  </svg>
-                </button>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
 
             {/* Product info */}
-            <div className="w-full md:w-[498px] h-[626px] overflow-y-scroll hide-scrollbar">
+            <div className="w-full md:w-[498px] h-fit">
               <div className="flex flex-row justify-between">
                 <h1 className="text-2xl leading-8 mb-2 font-satoshi ">
                   {currentProduct.name}
@@ -432,7 +360,7 @@ const ProductDetailPage = () => {
                 </div>
               </div>
               <p className="text-2xl leading-[29.3px] font-helvetica font-medium mb-1 flex gap-1">
-                ₹ <div className="font-satoshi">{currentProduct.price}</div>
+                ₹ <div className="font-satoshi_B">{currentProduct.price}</div>
               </p>
               <p className="text-base font-normal font-satoshi text-gray-500 ">
                 Inclusive of all taxes
@@ -463,15 +391,17 @@ const ProductDetailPage = () => {
               </div> */}
 
               {/* Similar Products as Color Selection */}
-              <div className="my-7">
-                <h2 className="font-semibold mb-2">Color</h2>
+              <div className="pl-1 my-7">
+                <h2 className="font-satoshi text-base leading-5 mb-2">
+                  Color : {currentProduct.color}
+                </h2>
                 <div className="flex gap-[7px]">
                   {allProducts.map((product, index) => (
                     <button
                       key={product._id}
                       className={`w-[70px] h-[70px] relative ${
                         currentProduct._id === product._id
-                          ? "ring-2 ring-blue-500 after:absolute after:inset-0 after:bg-black/20"
+                          ? "ring-2 ring-black after:absolute after:inset-0 after:bg-black/20"
                           : ""
                       }`}
                       onClick={() => handleProductSwitch(product)}
@@ -497,24 +427,41 @@ const ProductDetailPage = () => {
                 </div>
 
                 <div className="grid grid-cols-4 gap-2 ">
-                  {ALL_POSSIBLE_SIZES.map((size) => (
-                    <button
-                      key={size}
-                      className={`p-2 border border-black  ${
-                        availableSizes.includes(size)
-                          ? selectedSize === size
-                            ? "bg-black text-white"
-                            : "hover:bg-gray-100"
-                          : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      }`}
-                      onClick={() =>
-                        availableSizes.includes(size) && handleSizeSelect(size)
-                      }
-                      disabled={!availableSizes.includes(size)}
-                    >
-                      {size}
-                    </button>
-                  ))}
+                  {ALL_POSSIBLE_SIZES.map((size) => {
+                    const isSizeInCart =
+                      Array.isArray(cart) &&
+                      cart.some(
+                        (item) =>
+                          item.id === currentProduct._id && item.size === size
+                      );
+
+                    return (
+                      <button
+                        key={size}
+                        className={`p-2 border border-black relative ${
+                          availableSizes.includes(size)
+                            ? selectedSize === size
+                              ? "bg-black text-white"
+                              : isSizeInCart
+                              ? "bg-gray-100"
+                              : "hover:bg-gray-100"
+                            : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        }`}
+                        onClick={() =>
+                          availableSizes.includes(size) &&
+                          handleSizeSelect(size)
+                        }
+                        disabled={!availableSizes.includes(size)}
+                      >
+                        {size}
+                        {isSizeInCart && (
+                          <span className="absolute -top-2 -right-2 bg-black text-white text-xs px-1 rounded-full">
+                            In bag
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -524,7 +471,7 @@ const ProductDetailPage = () => {
                 onClick={handleAddToCart}
                 className="w-full h-[67px] font-satoshi text-xl leading-[27px] bg-black text-white py-3 rounded-4xl mt-[10px] mb-4"
               >
-                ADD TO CART
+                {isInCart ? "VIEW IN BAG" : "ADD TO CART"}
               </button>
               <button className="w-full h-[67px] font-satoshi text-xl leading-[27px] border text-black py-3 rounded-4xl  mb-4">
                 ADD TO WISHLIST

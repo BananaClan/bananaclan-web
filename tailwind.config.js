@@ -11,6 +11,7 @@ module.exports = {
       },
       fontFamily: {
         satoshi: ["Satoshi", "sans-serif"],
+        satoshi_B: ["Satoshi-b", "sans-serif"],
         futura: ["Futura", "sans-serif"],
         futurac: ["FuturaC", "sans-serif"],
         bebasNeue: ["BebasNeue", "sans-serif"],
