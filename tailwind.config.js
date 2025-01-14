@@ -4,19 +4,22 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        'custom-40': ['40px', {
-          lineHeight: '46px',
-          fontWeight: '400',
-        }],
+        "custom-40": [
+          "40px",
+          {
+            lineHeight: "46px",
+            fontWeight: "400",
+          },
+        ],
       },
       fontFamily: {
         satoshi: ["Satoshi", "sans-serif"],
         satoshi_B: ["Satoshi-b", "sans-serif"],
         futura: ["Futura", "sans-serif"],
-        futurac: ["FuturaC", "sans-serif"],
+        futuraCondensed: ["FuturaCondensed", "sans-serif"],
         bebasNeue: ["BebasNeue", "sans-serif"],
         helvetica: ["Helvetica", "sans-serif"],
-        helveticaNeue: ["HelveticaNeue", "sans-serif"]
+        helveticaNeue: ["HelveticaNeue", "sans-serif"],
       },
       colors: {
         "TopBar-blue": "#322FEE",

@@ -153,7 +153,7 @@ const CartDrawer = () => {
       </div>
     </div>
   );
-  
+
   const CartItem = ({ item, isLast }) => (
     <div className={`py-4 border-b border-[#ECECEC] ${isLast ? "pb-4" : ""}`}>
       <div className="flex items-start">
@@ -161,8 +161,9 @@ const CartDrawer = () => {
           className="flex flex-1 cursor-pointer"
           onClick={() => {
             navigate(`/product/${item.id}`);
-            setIsOpen(false);  // Close the cart drawer when navigating
-          }}        >
+            setIsOpen(false); // Close the cart drawer when navigating
+          }}
+        >
           {/* Checkbox and Image Container */}
           <div className="relative">
             <img
@@ -241,8 +242,9 @@ const CartDrawer = () => {
                     </button>
 
                     {isDropdownOpen === item.id && (
-                      <div className="absolute z-10 w-16 mt-1 bg-white border border-gray-300 rounded shadow-lg quantity-dropdown"
-                      onClick={(e) => e.stopPropagation()}
+                      <div
+                        className="absolute z-10 w-16 mt-1 bg-white border border-gray-300 rounded shadow-lg quantity-dropdown"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {[1, 2, 3, 4, 5].map((num) => (
                           <button
@@ -478,18 +480,15 @@ const CartDrawer = () => {
           </div>
         </div>
 
-         {/* Delete Confirmation Modal */}
-      {showDeleteModal && (
-      <div className="absolute inset-0 top-0 right-0 h-full w-[483px]">
-      <DeleteModal
-        item={cartItems.find((item) => item.id === showDeleteModal)}
-      />
-    </div>
-      )}
+        {/* Delete Confirmation Modal */}
+        {showDeleteModal && (
+          <div className="absolute inset-0 top-0 right-0 h-full w-[483px]">
+            <DeleteModal
+              item={cartItems.find((item) => item.id === showDeleteModal)}
+            />
+          </div>
+        )}
       </div>
-
-
-     
     </div>
   );
 };
