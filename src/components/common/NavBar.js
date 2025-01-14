@@ -22,7 +22,7 @@ const NavBar = () => {
     <div className="relative">
       <div
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out 
-        ${isCollectionsOpen ? "bg-black" : "bg-white"}`}
+        ${isCollectionsOpen ? "bg-black" : "bg-white"} hidden md:block`}
       >
         <div className="flex flex-row justify-between items-center px-10 h-16">
           {/* Logo */}

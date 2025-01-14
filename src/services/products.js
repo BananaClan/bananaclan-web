@@ -255,6 +255,24 @@ export const SellerStoresCollection = [
     productName: "Super kicks",
     price: "₹ 3,199",
   },
+  {
+    id: 4,
+    imageUrl: "/assets/images/store4.jpg", // placeholder image path
+    productName: "Super kicks",
+    price: "₹ 3,199",
+  },
+  {
+    id: 4,
+    imageUrl: "/assets/images/store4.jpg", // placeholder image path
+    productName: "Super kicks",
+    price: "₹ 3,199",
+  },
+  {
+    id: 4,
+    imageUrl: "/assets/images/store4.jpg", // placeholder image path
+    productName: "Super kicks",
+    price: "₹ 3,199",
+  }
   // Add more products as needed
 ];
 export const faqData = [
@@ -278,8 +296,8 @@ export const faqData = [
 ];
 export const brands = [
   { name: "NIKE", logo: "/assets/images/brandLogo.png" },
-  { name: "ADIDAS", logo: "/assets/images/brandLogo.png" },
-  { name: "NEW BALANCE", logo: "/assets/images/brandLogo.png" },
-  { name: "ONITSUKA TIGER", logo: "/assets/images/brandLogo.png" },
-  { name: "CONVERSE", logo: "/assets/images/brandLogo.png" },
+  { name: "ADIDAS", logo: "/assets/images/brandLogoAdidas.webp" },
+  { name: "NEW BALANCE", logo: "/assets/images/brandLogoNewBalance.webp" },
+  { name: "ONITSUKA TIGER", logo: "/assets/images/brandLogoOnitsuka.webp" },
+  { name: "CONVERSE", logo: "/assets/images/brandLogoConverse.webp" },
 ];

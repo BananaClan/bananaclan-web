@@ -97,12 +97,17 @@ const BrandCollection = ({ brand, logo }) => {
       return () => container.removeEventListener("scroll", handleScroll);
     }
   }, [currentIndex, cardWidth, gapWidth]);
-
+// Make sure these event handlers are defined outside the return statement
+const handleButtonClick = (e) => {
+  // Prevent the hover events from interfering
+  e.stopPropagation();
+};
   return (
     <div className="border-b border-black py-4">
       <div
-        className="flex justify-between items-center cursor-pointer w-full"
-        onClick={() => setIsOpen(!isOpen)}
+        className="flex justify-between items-center  w-full"
+        onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
       >
         <div className="flex items-center">
           <img
@@ -137,6 +142,8 @@ const BrandCollection = ({ brand, logo }) => {
         className={`transition-all duration-500 ease-in-out ${
           isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
         } overflow-hidden`}
+        onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
       >
         <div className="mt-4 flex flex-col">
           <div className="flex relative gap-2  flex-row py-[11.5px] justify-between items-center">
@@ -145,12 +152,15 @@ const BrandCollection = ({ brand, logo }) => {
               <div className="font-satoshi font-normal text-[16px] leading-[21.6px] rounded-4xl border py-2 px-5 border-black flex items-center w-[111px] h-[38px]">
                 View ALL
               </div>
-              <div className="flex gap-4">
+              <div className="flex gap-4 z-10">
                 <button
-                  onClick={prevSlide}
-                  className={`${
-                    currentIndex === 0 ? "cursor-not-allowed opacity-50" : ""
-                  }`}
+                onClick={(e) => {
+                  handleButtonClick(e);
+                  prevSlide();
+                }}
+                className={`pointer-events-auto ${
+                  currentIndex === 0 ? "cursor-not-allowed opacity-50" : ""
+                }`}
                   disabled={currentIndex === 0}
                 >
                   <div className="border rounded-3xl border-black p-3 w-[40px] h-[40px] flex items-center justify-center">
@@ -162,12 +172,15 @@ const BrandCollection = ({ brand, logo }) => {
                   </div>
                 </button>
                 <button
-                  onClick={nextSlide}
-                  className={`${
-                    currentIndex >= NewArrivalproducts.length - 4
-                      ? "cursor-not-allowed opacity-50"
-                      : ""
-                  }`}
+                 onClick={(e) => {
+                  handleButtonClick(e);
+                  nextSlide();
+                }}
+                className={`pointer-events-auto ${
+                  currentIndex >= NewArrivalproducts.length - 4
+                    ? "cursor-not-allowed opacity-50"
+                    : ""
+                }`}
                   disabled={currentIndex >= NewArrivalproducts.length - 4}
                 >
                   <div className="border rounded-3xl border-black p-3 w-[40px] h-[40px] flex items-center justify-center">

@@ -551,7 +551,7 @@ const ProductDetailPage = () => {
         </div>
         {/* You Might Also Like section */}
         <div className="w-full container  mx-auto   max-w-[1512px]">
-          <section className="mt-20 max-w-[1320px] w-full mx-auto">
+          <section className="mt-20 max-w-[1320px] w-full mx-auto h-fit min-h-[528px] flex flex-col gap-3 relative overflow-visible z-0">
             <ProductSlider
               sectionTitle="You Might Also Like"
               products={NewArrivalproducts}
