@@ -36,9 +36,9 @@ export const NewArrivals = () => {
           New Arrivals
         </div>
         <div className="flex flex-row gap-5 w-[227px] h-[40px] justify-between items-center mr-3">
-          <div className="font-satoshi font-normal text-[16px] leading-[21.6px] rounded-4xl border py-2 px-5 border-black flex items-center w-[111px] h-[38px]">
+          <button className="font-satoshi font-normal text-black hover:text-white text-base leading-[21.6px] rounded-4xl border py-2 px-5 border-black hover:bg-black transition-colors duration-300 flex items-center w-28 h-[38px]">
             View ALL
-          </div>
+          </button>
           <div className="flex gap-4">
             <button
               onClick={prevSlide}
@@ -94,7 +94,7 @@ export const NewArrivals = () => {
                 }px)`,
               }}
               key={product.id}
-              className="flex  "
+              className="flex "
               // style={{ width: cardWidth }}
             >
               <ProductCard
