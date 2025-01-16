@@ -14,6 +14,7 @@ import NavBar from "./components/common/NavBar";
 
 import AuthPage from "./pages/AuthPage";
 import MobileProductDetailPage from "./pages/MBProductDeatailsPage";
+import ProductListingPage from "./pages/ProductListingPage";
 
 const App = () => {
   const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
@@ -33,6 +34,8 @@ const App = () => {
               <Routes>
                 {/* Public routes that don't require authentication */}
                 <Route path="/" element={<LandingPage />} />
+                {/* <Route path="/" element={<ProductListingPage />} /> */}
+
                 {/* <Route path="/productdetail" element={<ProductDetailPage />} /> */}
                 <Route path="/auth" element={<AuthPage />} />
 
