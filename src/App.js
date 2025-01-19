@@ -33,8 +33,8 @@ const App = () => {
             <main className="flex-grow">
               <Routes>
                 {/* Public routes that don't require authentication */}
-                <Route path="/" element={<LandingPage />} />
-                {/* <Route path="/" element={<ProductListingPage />} /> */}
+                {/* <Route path="/" element={<LandingPage />} /> */}
+                <Route path="/" element={<ProductListingPage />} />
 
                 {/* <Route path="/productdetail" element={<ProductDetailPage />} /> */}
                 <Route path="/auth" element={<AuthPage />} />
