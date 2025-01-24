@@ -471,7 +471,13 @@ const CartDrawer = () => {
             </p>
           </div>
           <div className="flex gap-[12px]">
-            <button className="px-[36px] py-4 border border-black text-black font-satoshi text-[16px] font-normal">
+            <button
+              onClick={() => {
+                navigate("/bag");
+                setIsOpen(false); // Close the cart drawer when navigating
+              }}
+              className="px-[36px] py-4 border border-black text-black font-satoshi text-[16px] font-normal"
+            >
               VIEW BAG
             </button>
             <button className="flex-1 py-3 px-4 bg-black text-white font-satoshi text-[16px] font-medium">
