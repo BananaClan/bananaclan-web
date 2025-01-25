@@ -16,8 +16,8 @@ import { CaptionSection } from "../components/common/CaptionSection";
 const LandingPage = () => {
   return (
     <div className="w-full h-full bg-white flex flex-col justify-center ">
-      <TopBar />
-      <div className="mt-[40px] h-[650px] mb-22">
+      {/* <TopBar /> */}
+      <div className="mt-[64px] h-[650px] mb-22 ">
         <HeroImageContainer />
       </div>
 

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import CartDrawer from "./CartDrawer";
-import UserProfileDrawer from "./UserProfileDrawer";
+import { useNavigate } from "react-router-dom";
+import IntegratedAuth from "./LoginModal";
+import AnimatedLogo from "./AnimatedLogo";
 
 const NavBar = () => {
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const sections = {
     "Threads Tell Tales": ["Adidas", "Nike", "Asics"],
@@ -19,18 +22,19 @@ const NavBar = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative ">
       <div
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out 
         ${isCollectionsOpen ? "bg-black" : "bg-white"} hidden md:block`}
       >
-        <div className="flex flex-row justify-between items-center px-10 h-16">
+        <div className="flex flex-row cursor-pointer justify-between items-center px-10 h-16">
           {/* Logo */}
-          <div
-            className={`font-bold text-2xl transition-all duration-300 ease-in-out
-            ${isCollectionsOpen ? "text-white" : "text-black"}`}
-          >
-            bananaclan
+          <div onClick={() => navigate("/")}>
+            <img
+              src="/assets/images/bananaclanLogo.svg"
+              alt="bananaclan"
+              className="h-10 relative z-[1]"
+            />
           </div>
 
           {/* Center Navigation */}
@@ -46,7 +50,6 @@ const NavBar = () => {
                 hover:opacity-70 py-2`}
               >
                 Collections
-                {/* Animated underline */}
                 <div
                   className={`absolute bottom-0 left-0 w-full h-0.5 transform origin-left transition-all duration-300
                   ${
@@ -57,6 +60,7 @@ const NavBar = () => {
                 />
               </button>
 
+              {/* Collections Dropdown Content */}
               <div
                 className={`fixed left-0 w-full bg-black transition-all duration-300 ease-in-out
                 ${
@@ -76,11 +80,11 @@ const NavBar = () => {
                           <div
                             key={sectionTitle}
                             className={`mb-8 transition-all duration-300 ease-in-out
-                          ${
-                            isCollectionsOpen
-                              ? "opacity-100 translate-y-0"
-                              : "opacity-0 translate-y-4"
-                          }`}
+                            ${
+                              isCollectionsOpen
+                                ? "opacity-100 translate-y-0"
+                                : "opacity-0 translate-y-4"
+                            }`}
                             style={{
                               transitionDelay: `${sectionIndex * 100}ms`,
                             }}
@@ -93,11 +97,11 @@ const NavBar = () => {
                                 <div
                                   key={item}
                                   className={`text-gray-400 hover:text-white cursor-pointer transition-all duration-300 ease-in-out
-                                ${
-                                  isCollectionsOpen
-                                    ? "opacity-100 translate-y-0"
-                                    : "opacity-0 translate-y-4"
-                                }`}
+                                  ${
+                                    isCollectionsOpen
+                                      ? "opacity-100 translate-y-0"
+                                      : "opacity-0 translate-y-4"
+                                  }`}
                                   style={{
                                     transitionDelay: `${
                                       sectionIndex * 100 + itemIndex * 50
@@ -144,7 +148,6 @@ const NavBar = () => {
                   hover:opacity-70`}
               >
                 {item}
-                {/* Animated underline */}
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-current transform scale-x-0 transition-transform duration-300 origin-left hover:scale-x-100" />
               </button>
             ))}
@@ -156,10 +159,7 @@ const NavBar = () => {
             ${isCollectionsOpen ? "text-white" : "text-black"}`}
           >
             <CartDrawer />
-            <UserProfileDrawer
-              isLoggedIn={false}
-              userAvatar="/assets/images/img-avatar.gif"
-            />
+            <IntegratedAuth />{" "}
           </div>
         </div>
       </div>
