@@ -15,6 +15,7 @@ import AuthPage from "./pages/AuthPage";
 import MobileProductDetailPage from "./pages/MBProductDeatailsPage";
 import LoginModal from "./components/common/LoginModal";
 import LoadingPage from "./pages/LoadingPage";
+import ProductListingPage from "./pages/ProductListingPage";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -51,6 +52,7 @@ const App = () => {
                 <main className="flex-grow">
                   <Routes>
                     <Route path="/" element={<LandingPage />} />
+
                     <Route
                       path="/product/:productId"
                       element={
@@ -93,6 +95,7 @@ const App = () => {
                         </SignedIn>
                       }
                     />
+                    <Route path="/ProductListingPage" element={<ProductListingPage />} />
                   </Routes>
                 </main>
               </div>
