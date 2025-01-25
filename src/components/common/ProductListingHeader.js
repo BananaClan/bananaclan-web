@@ -152,7 +152,7 @@ const FilterDrawer = ({ isOpen, onClose }) => {
                 <button
                   key={size}
                   onClick={() => handleFilterSelect('size', size)}
-                  className={`px-3 py-2 border rounded ${
+                  className={`px-3 py-2 border  ${
                     selectedFilters.size.includes(size)
                       ? 'border-black bg-black text-white'
                       : 'border-black hover:border-black'

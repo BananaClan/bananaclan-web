@@ -51,8 +51,7 @@ const App = () => {
               <div className="min-h-screen flex flex-col">
                 <main className="flex-grow">
                   <Routes>
-                    {/* <Route path="/" element={<LandingPage />} /> */}
-                <Route path="/" element={<ProductListingPage />} />
+                    <Route path="/" element={<LandingPage />} />
 
                     <Route
                       path="/product/:productId"
@@ -96,6 +95,7 @@ const App = () => {
                         </SignedIn>
                       }
                     />
+                    <Route path="/ProductListingPage" element={<ProductListingPage />} />
                   </Routes>
                 </main>
               </div>
