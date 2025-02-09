@@ -3,6 +3,7 @@ import CartDrawer from "./CartDrawer";
 import { useNavigate } from "react-router-dom";
 import IntegratedAuth from "./LoginModal";
 import AnimatedLogo from "./AnimatedLogo";
+import AuthButton from "../auth/AuthButton";
 
 const NavBar = () => {
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
@@ -159,7 +160,9 @@ const NavBar = () => {
             ${isCollectionsOpen ? "text-white" : "text-black"}`}
           >
             <CartDrawer />
-            <IntegratedAuth />{" "}
+            {/* <IntegratedAuth />{" "} */}
+            <AuthButton />
+
           </div>
         </div>
       </div>

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { ProductCard } from "../common/ProductCard";
 import { NewArrivalproducts } from "../../services/products";
+import { useNavigate } from "react-router-dom";
 
 export const NewArrivals = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-
+const navigate = useNavigate();
   const nextSlide = () => {
     if (currentIndex < NewArrivalproducts.length - 4) {
       setCurrentIndex(currentIndex + 1);
@@ -36,8 +37,11 @@ export const NewArrivals = () => {
           New Arrivals
         </div>
         <div className="flex flex-row gap-5 w-[227px] h-[40px] justify-between items-center mr-3">
-          <button className="font-satoshi font-normal text-black hover:text-white text-base leading-[21.6px] rounded-4xl border py-2 px-5 border-black hover:bg-black transition-colors duration-300 flex items-center w-28 h-[38px]">
+          <button 
+          onClick={()=>navigate("/ProductListingPage")}
+          className="font-satoshi font-normal text-black hover:text-white text-base leading-[21.6px] rounded-4xl border py-2 px-5 border-black hover:bg-black transition-colors duration-300 flex items-center w-28 h-[38px]">
             View ALL
+            
           </button>
           <div className="flex gap-4">
             <button
