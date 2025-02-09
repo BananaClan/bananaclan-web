@@ -16,6 +16,8 @@ import MobileProductDetailPage from "./pages/MBProductDeatailsPage";
 import LoginModal from "./components/common/LoginModal";
 import LoadingPage from "./pages/LoadingPage";
 import ProductListingPage from "./pages/ProductListingPage";
+import { AuthProvider } from "./context/AuthContext";
+import { AuthCallback } from "./components/auth/AuthCallback";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,84 +27,99 @@ const App = () => {
     console.error("Missing Publishable Key");
     return null;
   }
-
+  // Configure Clerk with options
+  const clerkConfig = {
+    publishableKey: clerkPubKey,
+    navigationFallback: {
+      "/": "/", // Default fallback route
+      "/sso-callback": "/sso-callback", // OAuth callback route
+    },
+  };
   const handleLoadingComplete = () => {
     setIsLoading(false);
   };
 
   return (
-    <ClerkProvider publishableKey={clerkPubKey}>
-      <Router>
-        <CartProvider>
-          <AnimatePresence>
-            {isLoading && (
-              <LoadingPage
-                onLoadingComplete={() => {
-                  setTimeout(() => {
-                    setIsLoading(false);
-                  }, 100);
-                }}
-              />
-            )}
-          </AnimatePresence>
-          {!isLoading && (
-            <>
-              <NavBar />
-              <div className="min-h-screen flex flex-col">
-                <main className="flex-grow">
-                  <Routes>
-                    <Route path="/" element={<LandingPage />} />
+    <ClerkProvider {...clerkConfig}>
+      <AuthProvider>
+        <Router>
+          <CartProvider>
+            <AnimatePresence>
+              {isLoading && (
+                <LoadingPage
+                  onLoadingComplete={() => {
+                    setTimeout(() => {
+                      setIsLoading(false);
+                    }, 100);
+                  }}
+                />
+              )}
+            </AnimatePresence>
+            {!isLoading && (
+              <>
+                <NavBar />
+                <div className="min-h-screen flex flex-col">
+                  <main className="flex-grow">
+                    <Routes>
+                      <Route path="/" element={<LandingPage />} />
 
-                    <Route
-                      path="/product/:productId"
-                      element={
-                        window.innerWidth <= 440 && window.innerWidth >= 320 ? (
-                          <MobileProductDetailPage />
-                        ) : (
-                          <ProductDetailPage />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/bag"
-                      element={
-                        <SignedIn>
-                          <BagPage />
-                        </SignedIn>
-                      }
-                    />
-                    <Route
-                      path="/shipping"
-                      element={
-                        <SignedIn>
-                          <ShippingPage />
-                        </SignedIn>
-                      }
-                    />
-                    <Route
-                      path="/order-success"
-                      element={
-                        <SignedIn>
-                          <OrderSuccessPage />
-                        </SignedIn>
-                      }
-                    />
-                    <Route
-                      path="/order-confirmation"
-                      element={
-                        <SignedIn>
-                          <OrderConfirmation />
-                        </SignedIn>
-                      }
-                    />
-                    <Route path="/ProductListingPage" element={<ProductListingPage />} />
-                  </Routes>
-                </main>
-              </div>
-            </>
-          )}
-        </CartProvider>
-      </Router>
+                      <Route
+                        path="/product/:productId"
+                        element={
+                          window.innerWidth <= 440 &&
+                          window.innerWidth >= 320 ? (
+                            <MobileProductDetailPage />
+                          ) : (
+                            <ProductDetailPage />
+                          )
+                        }
+                      />
+                      <Route
+                        path="/bag"
+                        element={
+                          <SignedIn>
+                            <BagPage />
+                          </SignedIn>
+                        }
+                      />
+                      <Route
+                        path="/shipping"
+                        element={
+                          <SignedIn>
+                            <ShippingPage />
+                          </SignedIn>
+                        }
+                      />
+                      <Route
+                        path="/order-success"
+                        element={
+                          <SignedIn>
+                            <OrderSuccessPage />
+                          </SignedIn>
+                        }
+                      />
+                      <Route
+                        path="/order-confirmation"
+                        element={
+                          <SignedIn>
+                            <OrderConfirmation />
+                          </SignedIn>
+                        }
+                      />
+                      {/* OAuth Callback Route - handles authentication completion */}
+                      <Route path="/sso-callback" element={<AuthCallback />} />
+                      <Route
+                        path="/ProductListingPage"
+                        element={<ProductListingPage />}
+                      />
+                    </Routes>
+                  </main>
+                </div>
+              </>
+            )}
+          </CartProvider>
+        </Router>
+      </AuthProvider>
     </ClerkProvider>
   );
 };

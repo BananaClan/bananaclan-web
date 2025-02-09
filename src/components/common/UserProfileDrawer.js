@@ -8,7 +8,7 @@ import {
 } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 
-const UserProfileDrawer = ({}) => {
+const UserProfileDrawer = ({ }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("profile");
   const [slideDirection, setSlideDirection] = useState("forward");
@@ -43,7 +43,15 @@ const UserProfileDrawer = ({}) => {
       document.body.style.width = "";
     };
   }, [isOpen]);
-
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      setIsOpen(false); // Close the drawer using existing state
+      navigate('/'); // Navigate to landing page
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
   const handlePageChange = (page) => {
     setSlideDirection("forward");
     setCurrentPage(page);
@@ -471,7 +479,7 @@ const UserProfileDrawer = ({}) => {
             {/* Logout Button */}
             <div className="absolute bottom-0 left-0 right-0 p-6">
               <button
-                onClick={() => signOut()}
+                onClick={handleSignOut}
                 className="w-full flex items-center justify-center gap-[10px] p-[16.5px] bg-black text-white font-helvetica text-[20px] font-normal"
               >
                 <svg
